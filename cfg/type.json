@@ -1,0 +1,16 @@
+[{
+	"type":"Defaut",
+	"couleur":"",
+	"element":"mur"
+},
+{
+	"type":"Chemin",
+	"couleur":"#FE2E2E",
+	"element":"chemin"
+},
+{
+	"type":"Spawn",
+	"couleur":"#0080ff",
+	"element":"spawn"
+}
+]
