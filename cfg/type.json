@@ -5,12 +5,42 @@
 },
 {
 	"type":"Chemin",
-	"couleur":"#FE2E2E",
+	"couleur":"#ffeb8d",
 	"element":"chemin"
 },
 {
 	"type":"Spawn",
 	"couleur":"#0080ff",
 	"element":"spawn"
+},
+{
+	"type":"Buisson",
+	"couleur":"#008000",
+	"element":"buisson"
+},
+{
+	"type":"Cage aux loups",
+	"couleur":"#4f4e4e",
+	"element":"loup"
+},
+{
+	"type":"Cage aux guepards",
+	"couleur":"#ffff00",
+	"element":"guepard"
+},
+{
+	"type":"Cage aux ours",
+	"couleur":"#412406",
+	"element":"ours"
+},
+{
+	"type":"Cage aux lions",
+	"couleur":"#ffa500",
+	"element":"lion"
+},
+{
+	"type":"Viande",
+	"couleur":"#f02d4f",
+	"element":"viande"
 }
 ]
