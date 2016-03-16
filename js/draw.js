@@ -24,7 +24,7 @@ function draw() {
     context.fillStyle = "rgb(0,0,0)";
     var tailleAnimaux = 0.12*hauteur;
     animaux.forEach(function(animal, index) {
-        //context.fillText(animal, 15, (index+1)*30);
+        //context.fillText(Animal, 15, (index+1)*30);
         var image = new Image();
         image.src = ('img/'+animal.nom+'.png');
         image.onload = function () {
@@ -56,6 +56,24 @@ function draw() {
     // ESPACE DES ACTIONS
     context.fillStyle = "rgb(116,179,193)";
     context.fillRect(0.2*largeur, 0.8*hauteur, 0.6*largeur, 0.2*hauteur);
+
+
+
+    var element = "mur"; //élément par défaut
+    var width = 6400;
+    var height = 3224;
+    var MapRows = 50;
+    loadMap(width, height, MapRows, element, function(grille){
+        var DOMURL = self.URL || self.webkitURL || self;
+        var img = new Image();
+        var svg = new Blob([grille], {type: "image/svg+xml;charset=utf-8"});
+        var url = DOMURL.createObjectURL(svg);
+        img.onload = function() {
+            context.drawImage(img, 0, 0);
+            DOMURL.revokeObjectURL(url);
+        };
+        img.src = url;
+    });
 }
 
 
@@ -151,6 +169,10 @@ function progressText(ctx, x, y, width, height, radius, max) {
     }
     ctx.fillText(text, text_x, y+22);
     ctx.restore();
+}
+
+function gridClick(d){
+    console.log("Clické !");
 }
 
 // Define the size and position of indicator

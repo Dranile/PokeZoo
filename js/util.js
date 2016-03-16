@@ -16,7 +16,7 @@ function mout(d) {
     }
 };
 
-function loadMap(width, height, MapRows, element){
+function loadMap(width, height, MapRows, element, callback){
 	
 
     // ========================================
@@ -57,12 +57,27 @@ function loadMap(width, height, MapRows, element){
 
 
 			    //Create SVG element
-			    var svg = d3.select(".map").append("svg")
-			        .attr("xmlns", "http://www.w3.org/2000/svg")
-			        .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
-			        .attr("width", width)
-			        .attr("height", height)
-			        .append("g");
+				var iscallback = (typeof callback !== "undefined");
+				var svg;
+				if (iscallback) {
+					var svg_tag = document.createElement("svg");
+					svg = d3.select(svg_tag)
+						.attr("xmlns", "http://www.w3.org/2000/svg")
+						.attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
+						.attr("width", width)
+						.attr("height", height)
+						.append("g");
+
+				}
+				else {
+					svg = d3.select(".map").append("svg")
+						.attr("xmlns", "http://www.w3.org/2000/svg")
+						.attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
+						.attr("width", width)
+						.attr("height", height)
+						.append("g");
+				}
+
 
 			    /*
 			    // Marche pas :(
@@ -103,6 +118,10 @@ function loadMap(width, height, MapRows, element){
 			            $(this).css("fill",data.color);
 			        }
 			      })
+
+				if (iscallback){
+					callback(svg_tag.outerHTML);
+				}
 			}
 			else{
 			   	alert("Il y a eu une erreur");
