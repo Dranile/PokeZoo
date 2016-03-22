@@ -63,19 +63,20 @@ function draw() {
     var width = 6400;
     var height = 3224;
     var MapRows = 50;
-    loadMap(width, height, MapRows, element, function(grille){
+    /*loadMap(width, height, MapRows, element, function(grille){
         var DOMURL = self.URL || self.webkitURL || self;
         var img = new Image();
         var svg = new Blob([grille], {type: "image/svg+xml;charset=utf-8"});
         var url = DOMURL.createObjectURL(svg);
         img.onload = function() {
-            context.drawImage(img, 0, 0);
+            context.drawImage(img, 0.2*largeur, 0, 0.6*largeur, 0.8*hauteur);
             DOMURL.revokeObjectURL(url);
         };
         img.src = url;
-    });
+    });*/
+    loadMap(width, height, MapRows, element);
+    //redessiner a la fin dun tour
 }
-
 
 function roundRect(ctx, x, y, width, height, radius) {
     ctx.beginPath();
