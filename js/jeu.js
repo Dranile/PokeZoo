@@ -13,5 +13,5 @@ function gridClick(d){
 
 
 $().ready(function(){
-	loadMap(width, height, MapRows, element);
+	loadMap(width, height, MapRows, element);        
 })

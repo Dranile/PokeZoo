@@ -1,4 +1,9 @@
+//Variable pour numéroter les hexagones
+var ordreHexagon = 0;
+//variable pour placer le personnage au centre
+var xPersonnage = 485 , yPersonnage = 310;
 //Fonction quand on passe la souris sur une case
+
 function mover(d) {
 	var el = d3.select(this)
 		.transition()
@@ -15,6 +20,20 @@ function mout(d) {
 			.style("fill-opacity", 0);
 	}
 };
+//Function pour numéroter les hexagones durant la mise en place de leurs attributions
+function ordreHexagone(){
+    
+    ordreHexagon++;
+    return ordreHexagon;
+}
+//Function pour placer le personnage au centre
+function placementCentre(){
+    
+    d3.select(".image")
+     .attr("transform", "translate(" + 485 +","+ 310 +")");
+}
+
+
 
 function loadMap(width, height, MapRows, element){
 
@@ -66,7 +85,17 @@ function loadMap(width, height, MapRows, element){
 					.attr("width", width)
 					.attr("height", height)
 					.append("g");
-
+                                
+                                //Attache l'image du guepard à la map
+                                 d3.select(".map").selectAll("svg")
+                                .append("svg:image")
+                                .attr("xlink:href", "img/guepard.png")
+                                .attr("width", 50)
+                                .attr("height", 50)
+                                .attr("id","image")
+                                .attr("class","image");
+                                
+                                placementCentre();
 				/*
 				 // Marche pas :(
 				 svg.append("image")
@@ -90,6 +119,7 @@ function loadMap(width, height, MapRows, element){
 						return "#000";
 					})
 					.attr("stroke-width", "1px")
+                                        .attr("ordreHexagone",ordreHexagone)
 					.classed(element, true)
 					.on("mouseover", mover)
 					.on("mouseout", mout)

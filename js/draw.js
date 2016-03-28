@@ -173,8 +173,117 @@ function progressText(ctx, x, y, width, height, radius, max) {
 }
 
 function gridClick(d){
+        
+        var hexa = this.getAttribute("ordreHexagone");
+        DeterminerDeplacement(hexa); 
     console.log("Clické !");
 }
+//Cette partie est à mettre ailleurs
+//
+//variable pour déplacer le personnage
+var xPersonnage = 485 , yPersonnage = 310;
+//Variable de l'hexagone où se trouve le personnage. Placé au départ au centre
+var ordreHexagoneActuel = 609;
+
+//Fonction qui détermine vers quelle direction aller selon l'hexagone ciblé
+function DeterminerDeplacement(ordreHexagone){
+    
+    var dep;
+    ordreHexagone =  parseInt(ordreHexagone);
+    //console.log("Ordrehexagone : "+ ordreHexagone);
+    //console.log("OrdreHexagoneActuel+1 : "+ (ordreHexagoneActuel+1) );
+    if(ordreHexagone == ordreHexagoneActuel+1){
+        console.log("Déterminer Déplacement droite");
+        dep =0;
+    }
+    
+    else if(ordreHexagone == ordreHexagoneActuel-1){
+          console.log("Déplacement gauche");
+        dep =1;
+    }
+    
+    else if(ordreHexagone == ordreHexagoneActuel-100){
+         console.log("Déplacement haut-droite");
+        dep =2;
+    }
+    
+    else if(ordreHexagone == ordreHexagoneActuel-101){
+         console.log("Déplacement haut-gauche");
+        dep =3;
+    }
+    
+    else if(ordreHexagone == ordreHexagoneActuel+100){
+         console.log("Déplacement bas-droite");
+        dep =4;
+    }
+    
+    else if(ordreHexagone == ordreHexagoneActuel+99){
+         console.log("Déplacement bas-gauche");
+        dep =5;
+    }
+    //console.log("Avant" +ordreHexagoneActuel);
+    ordreHexagoneActuel = ordreHexagone;
+    console.log("Après" +ordreHexagoneActuel);
+    console.log(dep);
+    deplacement(dep);
+}
+
+//Fonction pour déplacer le personnage selon l'information reçu par DeterminerDeplacement()
+function deplacement(dep){
+    var deplacementx = parseInt(65);
+    var deplacementx2 = parseInt(35);
+    var deplacementy = parseInt(60);
+    var elem = d3.select("div.map");
+    // x = moveX(elem, x , y, pas);
+    // y = moveY(elem, x, y, -pas);
+    switch(dep){
+        //Déplacement à droite
+        case 0 :
+             console.log("Déplacement droite");
+            xPersonnage = xPersonnage +  deplacementx ;
+            break;
+                   
+        //Déplacement à gauche    
+        case 1 : 
+             console.log("Déplacement gauche");
+            xPersonnage = xPersonnage - deplacementx ;
+             break;
+             
+         //Déplacement en haut à droite   
+        case 2 : 
+             console.log("Déplacement haut-droite");
+            xPersonnage = xPersonnage +  deplacementx;
+            yPersonnage = yPersonnage - deplacementy;
+             break;
+             
+         //Déplacement en haut à gauche
+        case 3 : 
+             console.log("Déplacement haut-gauche");
+            xPersonnage = xPersonnage - deplacementx;
+            yPersonnage = yPersonnage -deplacementy;
+             break;
+             
+         //Déplacement en bas à droite   
+        case 4 : 
+            console.log("Déplacement bas-droite");
+            xPersonnage = xPersonnage + deplacementx;
+            yPersonnage = yPersonnage +deplacementy;
+             break;
+             
+         //Déplacement en bas à gauche    
+        case 5 : 
+             console.log("Déplacement bas-gauche");
+            xPersonnage = xPersonnage - deplacementx;
+            yPersonnage = yPersonnage + deplacementy;
+             break;
+    }
+    console.log(xPersonnage);
+    console.log(yPersonnage);
+     d3.select(".image")
+     .attr("transform", "translate(" + xPersonnage +","+ yPersonnage +")");
+    //alert('test');
+}
+//Fin de la partie à mettre ailleurs
 
 // Define the size and position of indicator
 var total_width = 150;
