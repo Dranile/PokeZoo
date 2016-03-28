@@ -1,11 +1,12 @@
 /*
-* Serveur de jeu avec des requetes Ajax
-* Problèmes : comment partager une variable ? 
-* 	- Enregistrer dans un JSON ?
-* Comment pouvoir récupérer l'ip d'un client ? 
-* 	- http://stackoverflow.com/questions/8107856/how-to-determine-a-users-ip-address-in-node
-* 
+ * Serveur de jeu -- Ordonnanceur --
+ * Lancer avec la commande node serveur_jeu.js ou nodejs serveur_jeu.js
+ * Routes disponibles :
+ * 	- /game/joinGame
+ *  - /game/getEtat
+ *  - /game/updateGame
 */
+
 
 var fs = require('fs');
 var express = require('express');
@@ -96,7 +97,3 @@ app.post("/game/updateGame", function(req, res){
 });
 app.listen(port);
 console.log("Serveur tourne sur http://localhost:"+port);
-
-//Utilisation de socket.io pour le jeu, pour l'interface admin je fais de l'AJAX pour le moment
-//https://openclassrooms.com/courses/des-applications-ultra-rapides-avec-node-js/socket-io-passez-au-temps-reel
-//http://mherman.org/blog/2013/10/20/handling-ajax-calls-with-node-dot-js-and-express-scraping-craigslist/#.VtdODFn9LIU
