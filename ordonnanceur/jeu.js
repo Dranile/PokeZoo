@@ -63,8 +63,10 @@ function lancerPartie(){
                 "y" :posY
             }
         }).done(function( msg ) {
-            afficherObjets(msg);
             console.log(msg);
+            if(msg != null){
+                afficherObjets(msg);    
+            }
         })
         .fail(function(){
             clearInterval(interval);
