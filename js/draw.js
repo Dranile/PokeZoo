@@ -34,7 +34,15 @@ function draw() {
         var i = (animal.loyaute / animal.loyauteMax) * total_width;
 
         progressLayerRect(context, tailleAnimaux+20, (index)*(0.14*hauteur)+tailleAnimaux/2, total_width, total_height, radius);
-        progressBarRect(context, tailleAnimaux+20, (index)*(0.14*hauteur)+tailleAnimaux/2, i, total_height, radius, total_width);
+        if (animal.loyaute < animal.loyauteMax){
+            progressBarColore(context, tailleAnimaux+20, (index)*(0.14*hauteur)+tailleAnimaux/2, i, total_height, radius, total_width, "rgb(21,48,53)");
+        }
+        else if (animal.joueurAllie == joueurPrincipal) {
+            progressBarColore(context, tailleAnimaux+20, (index)*(0.14*hauteur)+tailleAnimaux/2, i, total_height, radius, total_width, "rgb(65,150,54)");
+        }
+        else {
+            progressBarColore(context, tailleAnimaux+20, (index)*(0.14*hauteur)+tailleAnimaux/2, i, total_height, radius, total_width, "rgb(150,28,21)");
+        }
         progressText(context, tailleAnimaux+20, (index)*(0.14*hauteur)+tailleAnimaux/2, i, total_height, radius, total_width);
     });
 
@@ -43,13 +51,13 @@ function draw() {
     context.fillRect(0, 0.6*hauteur, 0.2*largeur, 0.4*hauteur);
     var tailleDresseur = 0.20*hauteur;
     var dresseur = new Image();
-    //dresseur.src = 'fille3.png';
-    dresseur.src = ('img/'+joueur1.image);
+    dresseur.src = ('img/'+joueurPrincipal.image);
     dresseur.onload = function () {
         context.drawImage(dresseur, 0, 0.65*hauteur, tailleDresseur, (280/180)*tailleDresseur);
         context.fillStyle = "rgb(255,255,255)";
         context.font = "30px Arial";
-        context.fillText(joueur1.nom, 0.12*largeur, 0.70*hauteur);
+        context.fillText(joueurPrincipal.nom, 0.12*largeur, 0.70*hauteur);
+        context.fillText(joueurPrincipal.nourriture, 0.12*largeur, 0.80*hauteur)
     };
 
 
@@ -63,17 +71,7 @@ function draw() {
     var width = 6400;
     var height = 3224;
     var MapRows = 50;
-    /*loadMap(width, height, MapRows, element, function(grille){
-        var DOMURL = self.URL || self.webkitURL || self;
-        var img = new Image();
-        var svg = new Blob([grille], {type: "image/svg+xml;charset=utf-8"});
-        var url = DOMURL.createObjectURL(svg);
-        img.onload = function() {
-            context.drawImage(img, 0.2*largeur, 0, 0.6*largeur, 0.8*hauteur);
-            DOMURL.revokeObjectURL(url);
-        };
-        img.src = url;
-    });*/
+
     loadMap(width, height, MapRows, element);
     //redessiner a la fin dun tour
 }
@@ -112,8 +110,13 @@ function progressLayerRect(ctx, x, y, width, height, radius) {
 
     ctx.restore();
 }
+function progressBarColore(ctx, x, y, width, height, radius, max, couleur){
+    ctx.fillStyle = couleur;
+    progressBarRect(ctx, x, y, width, height, radius, max);
+}
 function progressBarRect(ctx, x, y, width, height, radius, max) {
-    ctx.fillStyle = "rgb(21,48,53)";
+    //ctx.fillStyle = "rgb(21,48,53)"; //couleur remplissage barre
+    //ctx.fillStyle = "rgb(255,0,0)";
     // deplacement for chord drawing
     var offset = 0;
     ctx.beginPath();
