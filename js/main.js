@@ -6,9 +6,7 @@ $().ready(function(){
 	draw();
 	$("div.login input[type=button]").on("click", function(){
         pseudo = $("input#name").val();
-        donnees = {
-            "pseudo":pseudo
-        }
+        var donnees = creerJoueurPrincipal(pseudo, 'fille1');
         console.log(donnees);
 		rejoindre(donnees, "div.login");
 	});
