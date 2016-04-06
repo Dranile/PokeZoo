@@ -1,3 +1,5 @@
+var joueurs = [];
+
 function Personnage(nom){
     this.nom = nom;
     this.initiative = 0;
@@ -10,6 +12,7 @@ Personnage.prototype.deplacer = function(posX, posY) {
     this.positionY = posY;
 };
 
+
 // ANIMAUX
 function Animal(nom, nourriture){
     Personnage.call(this, nom);
@@ -17,34 +20,43 @@ function Animal(nom, nourriture){
     this.loyaute = 0;
     this.loyauteMax = 5;
     this.joueurAllie = null;
-    this.loyauteJoueurPrincipal = 0;
-    this.loyauteJoueur0 = 0;
-    this.loyauteJoueur1 = 0; //pas dynamique du tout, obligé d'avoir 3 joueurs -> à voir en version dyna
+    this.niveau = [];
 
 }
 Animal.prototype.definirJoueurAllie = function(){
-    if(this.loyauteJoueurPrincipal > this.loyauteJoueur0 && this.loyauteJoueurPrincipal > this.loyauteJoueur1){
-        this.joueurAllie = joueurPrincipal;
-    }
-    else if (this.loyauteJoueur0 > this.loyauteJoueurPrincipal && this.loyauteJoueur0 > this.loyauteJoueur1) {
-        this.joueurAllie = joueurs[0];
-    }
-    else {
-        this.joueurAllie = joueurs[1];
+    var max = 0;
+    var nouvelAllie;
+    for (allie in this.niveau) {
+        console.log(allie);
+        console.log(this.niveau[allie]);
+        if (this.niveau[allie] > max){
+            max = this.niveau[allie];
+            nouvelAllie = allie;
+
+        }
+
+        if(joueurPrincipal.nom == nouvelAllie){
+            this.joueurAllie = joueurPrincipal;
+        }
+        else {
+            for (var j in joueurs){
+                //console.log(j);
+                if(joueurs[j].nom == nouvelAllie){
+                    this.joueurAllie = joueurs[j];
+                }
+            }
+        }
     }
 };
 Animal.prototype.nourriPar = function(joueur){
     if (this.loyaute<this.loyauteMax){
         this.loyaute+=1;
 
-        if (joueur == joueurPrincipal){
-            this.loyauteJoueurPrincipal ++;
+        if (joueur.nom in this.niveau){
+            this.niveau[joueur.nom] += 1 ;
         }
-        if (joueur == joueurs[0]){
-            this.loyauteJoueur0 ++;
-        }
-        if (joueur == joueurs[1]){
-            this.loyauteJoueur1 ++;
+        else {
+            this.niveau[joueur.nom] = 1 ;
         }
 
         if (this.loyaute == this.loyauteMax) {
@@ -94,8 +106,11 @@ var guepard = new Animal('guepard', "viande");
 var ours = new Animal('ours', "poisson");
 var animaux = [lion, loup, guepard, ours];
 
-var joueurs = [];
+
 var joueurPrincipal = creerJoueurPrincipal('sora', 'fille1');
+ajouterAutreJoueur('roxas', 'garcon2');
+ajouterAutreJoueur('cloud', 'garcon1');
+
 
 joueurPrincipal.nourrir(guepard);
 joueurPrincipal.prendreNourriture("viande");
@@ -107,12 +122,10 @@ while (lion.loyaute<lion.loyauteMax){
 joueurPrincipal.prendreNourriture("viande");
 joueurPrincipal.nourrir(guepard);
 
-ajouterAutreJoueur('roxas', 'garcon2');
 while (ours.loyaute<ours.loyauteMax){
     joueurs[0].prendreNourriture("poisson");
     joueurs[0].nourrir(ours);
 }
-ajouterAutreJoueur('cloud', 'garcon1');
 
 
 joueurs[1].prendreNourriture("viande");
@@ -125,7 +138,8 @@ joueurPrincipal.prendreNourriture("viande");
 joueurPrincipal.nourrir(loup);
 joueurPrincipal.prendreNourriture("viande");
 joueurPrincipal.nourrir(loup);
-console.log(loup.joueurAllie.nom);
+
+//debugger;
 
 joueurPrincipal.prendreNourriture("poisson");
 
