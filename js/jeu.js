@@ -7,6 +7,10 @@ function rejoindre(donnees, elem){
         }).done(function( msg ) {
             console.log( "Contrôle : " + msg );
             if(msg == "bienvenue"){
+                //console.log("donnees : " + donnees.pseudo);
+                //console.log("element : " + elem);
+                creerJoueurPrincipal(donnees.pseudo, "fille1");
+
                 attendreJoueur(elem);
             }
             else{
