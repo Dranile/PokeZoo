@@ -12,7 +12,8 @@ ajouterAutreJoueur("Test2", "garcon1");*/
 $().ready(function(){
 	$("div.login input[type=button]").on("click", function(){
         pseudo = $("input#name").val();
-        joueurP = creerJoueurPrincipal(pseudo, 'fille1');
+        avatar = $("input:checked[name=avatar]").val();
+        joueurP = creerJoueurPrincipal(pseudo, avatar);
         console.log(joueurP);
         draw(joueurP);
         rejoindre(joueurP, "div.login");
