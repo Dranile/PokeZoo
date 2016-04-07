@@ -17,9 +17,8 @@ Personnage.prototype.deplacer = function(posX, posY,hexa) {
 };
 
 Personnage.prototype.getHexagone = function(){
-
     return this.hexagone;
-}
+};
 
 // ANIMAUX
 function Animal(nom, nourriture){
@@ -91,29 +90,25 @@ Joueur.prototype.deplacer = function(){
     console.log(imag[0]);
     d3.select("."+imag[0])
      .attr("transform", "translate(" + this.positionX +","+ this.positionY +")");
-}
+};
 
 Joueur.prototype.getHexagone = function(){
-
     return this.hexagone;
 };
 
 Joueur.prototype.getPosition = function(){
-
     return "x : "+this.positionX+", y : "+this.positionY;
     
 };
 
 Joueur.prototype.getPosX = function(){
-
     return this.positionX;
 
-}
+};
 
 Joueur.prototype.getPosY = function(){
-
     return this.positionY;
-}
+};
 
 Joueur.prototype.prendreNourriture = function(nourriture){
     if (this.nourriture == ""){
@@ -141,34 +136,24 @@ function ajouterAutreJoueur(nom, avatar){
     joueurs.push(new Joueur(nom, avatar));
 }
 
-//TESTS
-
+//INITIALISATION ANIMAUX
 var lion = new Animal('lion', "viande");
 var loup = new Animal('loup', "viande");
 var guepard = new Animal('guepard', "viande");
 var ours = new Animal('ours', "poisson");
 var animaux = [lion, loup, guepard, ours];
 
-/*joueurPrincipal = creerJoueurPrincipal('sora', 'fille1');
-/*
-ajouterAutreJoueur('roxas', 'garcon2');
-ajouterAutreJoueur('cloud', 'garcon1');
-
-*/
-/*joueurPrincipal.nourrir(guepard);
-joueurPrincipal.prendreNourriture("viande");
-=======
 
 //TESTS
+/*
+joueurPrincipal = creerJoueurPrincipal('sora', 'fille1');
 
-/*var joueurPrincipal = creerJoueurPrincipal('sora', 'fille1');
 ajouterAutreJoueur('roxas', 'garcon2');
 ajouterAutreJoueur('cloud', 'garcon1');
 
+joueurPrincipal.nourrir(guepard);
+joueurPrincipal.prendreNourriture("viande");
 
-//joueurPrincipal.nourrir(guepard);
-//joueurPrincipal.prendreNourriture("viande");
->>>>>>> 485f60e9c5cfb9b08011e611b318c91fb18f3268
 while (lion.loyaute<lion.loyauteMax){
     joueurPrincipal.prendreNourriture("viande");
     joueurPrincipal.nourrir(lion);
@@ -176,25 +161,25 @@ while (lion.loyaute<lion.loyauteMax){
 
 joueurPrincipal.prendreNourriture("viande");
 joueurPrincipal.nourrir(guepard);
-/*
+
 while (ours.loyaute<ours.loyauteMax){
     joueurs[0].prendreNourriture("poisson");
     joueurs[0].nourrir(ours);
 }
 
+joueurs[1].prendreNourriture("viande");
+joueurs[1].nourrir(loup);
+joueurs[1].prendreNourriture("viande");
+joueurs[1].nourrir(loup);
+joueurs[1].prendreNourriture("viande");
+joueurs[1].nourrir(loup);
 
-joueurs[1].prendreNourriture("viande");
-joueurs[1].nourrir(loup);
-joueurs[1].prendreNourriture("viande");
-joueurs[1].nourrir(loup);
-joueurs[1].prendreNourriture("viande");
-joueurs[1].nourrir(loup);
-*/
-/*joueurPrincipal.prendreNourriture("viande");
+joueurPrincipal.prendreNourriture("viande");
 joueurPrincipal.nourrir(loup);
 joueurPrincipal.prendreNourriture("viande");
 joueurPrincipal.nourrir(loup);
 
 //debugger;
 
-joueurPrincipal.prendreNourriture("poisson");*/
+joueurPrincipal.prendreNourriture("poisson");
+*/
