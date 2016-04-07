@@ -8,7 +8,7 @@ $().ready(function(){
         pseudo = $("input#name").val();
         donnees = {
             "pseudo":pseudo
-        }
+        };
         console.log(donnees);
 		rejoindre(donnees, "div.login");
 	});
