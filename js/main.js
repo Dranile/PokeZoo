@@ -13,8 +13,8 @@ $().ready(function(){
 	$("div.login input[type=button]").on("click", function(){
         pseudo = $("input#name").val();
         joueurP = creerJoueurPrincipal(pseudo, 'fille1');
-        draw(joueurP);
         console.log(joueurP);
+        draw(joueurP);
         rejoindre(joueurP, "div.login");
 	});
 	if (debug == 1){

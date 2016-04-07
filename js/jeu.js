@@ -60,6 +60,7 @@ function attendreJoueur(element){
 }
 
 function lancerPartie(elem){
+
     // On enleve le message d'attente
     $(elem).remove();
     // boucle principale du jeu
@@ -80,6 +81,5 @@ function lancerPartie(elem){
             clearInterval(interval);
             alert("Le serveur semble être arrêté ou a eu un problème ...");
         });       
-    }, 2000)
-
+    }, 2000);
 }

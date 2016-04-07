@@ -1,4 +1,5 @@
 var joueurs = [];
+var joueurPrincipal;
 
 function Personnage(nom){
     this.nom = nom;
@@ -34,8 +35,6 @@ Animal.prototype.definirJoueurAllie = function(){
     var max = 0;
     var nouvelAllie;
     for (allie in this.niveau) {
-        console.log(allie);
-        console.log(this.niveau[allie]);
         if (this.niveau[allie] > max){
             max = this.niveau[allie];
             nouvelAllie = allie;
@@ -121,7 +120,7 @@ Joueur.prototype.prendreNourriture = function(nourriture){
         this.nourriture = nourriture;
     }
     else{
-        console.log("impossible de prendre davantage de nourriture");
+        alert("impossible de prendre davantage de nourriture");
     }
 };
 Joueur.prototype.nourrir = function(animal){
@@ -130,7 +129,7 @@ Joueur.prototype.nourrir = function(animal){
         this.nourriture = "";
     }
     else {
-        console.log("impossible de nourrir "+animal.nom);
+        alert("impossible de nourrir "+animal.nom);
     }
 };
 
@@ -150,8 +149,7 @@ var guepard = new Animal('guepard', "viande");
 var ours = new Animal('ours', "poisson");
 var animaux = [lion, loup, guepard, ours];
 
-
-var joueurPrincipal;/* = creerJoueurPrincipal('sora', 'fille1');
+/*joueurPrincipal = creerJoueurPrincipal('sora', 'fille1');
 /*
 ajouterAutreJoueur('roxas', 'garcon2');
 ajouterAutreJoueur('cloud', 'garcon1');
@@ -159,6 +157,18 @@ ajouterAutreJoueur('cloud', 'garcon1');
 */
 /*joueurPrincipal.nourrir(guepard);
 joueurPrincipal.prendreNourriture("viande");
+=======
+
+//TESTS
+
+/*var joueurPrincipal = creerJoueurPrincipal('sora', 'fille1');
+ajouterAutreJoueur('roxas', 'garcon2');
+ajouterAutreJoueur('cloud', 'garcon1');
+
+
+//joueurPrincipal.nourrir(guepard);
+//joueurPrincipal.prendreNourriture("viande");
+>>>>>>> 485f60e9c5cfb9b08011e611b318c91fb18f3268
 while (lion.loyaute<lion.loyauteMax){
     joueurPrincipal.prendreNourriture("viande");
     joueurPrincipal.nourrir(lion);
@@ -187,6 +197,4 @@ joueurPrincipal.nourrir(loup);
 
 //debugger;
 
-joueurPrincipal.prendreNourriture("poisson");
-
-*/
+joueurPrincipal.prendreNourriture("poisson");*/
