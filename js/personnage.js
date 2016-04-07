@@ -1,4 +1,5 @@
 var joueurs = [];
+var joueurPrincipal;
 
 function Personnage(nom){
     this.nom = nom;
@@ -91,7 +92,7 @@ Joueur.prototype.nourrir = function(animal){
 
 //FONCTIONS POUR COMMUNICATION SERVEUR
 function creerJoueurPrincipal(nom, avatar){
-    return new Joueur(nom, avatar);
+    joueurPrincipal = new Joueur(nom, avatar);
 }
 function ajouterAutreJoueur(nom, avatar){
     joueurs.push(new Joueur(nom, avatar));
@@ -102,6 +103,8 @@ var loup = new Animal('loup', "viande");
 var guepard = new Animal('guepard', "viande");
 var ours = new Animal('ours', "poisson");
 var animaux = [lion, loup, guepard, ours];
+
+
 
 //TESTS
 

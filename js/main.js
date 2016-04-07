@@ -3,7 +3,6 @@ var donnees;
 var pseudo;
 
 $().ready(function(){
-	draw();
 	$("div.login input[type=button]").on("click", function(){
         pseudo = $("input#name").val();
         donnees = {

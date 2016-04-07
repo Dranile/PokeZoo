@@ -7,9 +7,7 @@ function rejoindre(donnees, elem){
         }).done(function( msg ) {
             console.log( "Contrôle : " + msg );
             if(msg == "bienvenue"){
-                //console.log("donnees : " + donnees.pseudo);
-                //console.log("element : " + elem);
-                creerJoueurPrincipal(donnees.pseudo, "fille1");
+
 
                 attendreJoueur(elem);
             }
@@ -50,6 +48,7 @@ function attendreJoueur(element){
 }
 
 function lancerPartie(elem){
+
     // On enleve le message d'attente
     $(elem).remove();
     // boucle principale du jeu
@@ -72,5 +71,5 @@ function lancerPartie(elem){
             alert("Le serveur semble être arrêté ou a eu un problème ...");
         });       
     }, 2000)
-
+    document.location.href="jeu.html";
 }
