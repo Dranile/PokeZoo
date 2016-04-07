@@ -5,16 +5,14 @@ function changeObjet(objet){
     var obj = {};
     for(var i in objet){
         if(objet.hasOwnProperty(i)){
-            console.log(i);
             obj[i] = objet[i];
         }
     }
-    console.log(obj);
     return obj;
 }
 
-function rejoindre(donnees, elem){
-    var envoiObj = changeObjet(donnees);
+function rejoindre(joueurP, elem){
+    var envoiObj = changeObjet(joueurP);
         $.ajax({
             method: "POST",
             url: "http://localhost:5000/game/joinGame",
@@ -70,14 +68,12 @@ function lancerPartie(elem){
         method: "POST",
         url: "http://localhost:5000/game/updateGame",
         'Content-Type': 'application/json',
-        data:  {
-                "pseudo" : pseudo
-            }
+        data: changeObjet(joueurP)
         }).done(function( msg ) {
-            console.log(msg);
             if(msg != null){
-                //Update des joueurs
-
+                //Update des positions joueurs etc ...
+                // l'objet obtenu est un tableau de personnage (attention il n'y a paq de fonction prototype dedans ...)
+                console.log(msg)
             }
         })
         .fail(function(){

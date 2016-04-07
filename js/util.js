@@ -1,5 +1,6 @@
 //Variable pour numéroter les hexagones
 var ordreHexagon = 0;
+var ordreHexagoneActuel = 507;
 //variable pour placer le personnage au centre
 var xPersonnage = 485 , yPersonnage = 310;
 //Fonction quand on passe la souris sur une case
@@ -20,20 +21,89 @@ function mout(d) {
 			.style("fill-opacity", 0);
 	}
 };
+
+
+
+
 //Function pour numéroter les hexagones durant la mise en place de leurs attributions
 function ordreHexagone(){
     
     ordreHexagon++;
     return ordreHexagon;
 }
+var centrex = 389.97831388645;
+var centrey = 250.7661851649874;
+var textvar = 10;
 //Function pour placer le personnage au centre
 function placementCentre(){
     
-    d3.select(".image")
-     .attr("transform", "translate(" + 485 +","+ 310 +")");
+    d3.select(".fille1")
+     .attr("transform", "translate(" + centrex +","+ centrey +")");
 }
 
+function gridClick(d){
+        
+        var hexa = this.getAttribute("ordreHexagone");
+        var hexax = this.getAttribute("x");
+        var hexay = this.getAttribute("y");
+        /*
+        console.log("Hexa : " + hexa);
+       var testHexaActuel = joueurP.getHexagone();
+        console.log("HexaActuel :" + testHexaActuel);
+        */
+        //joueurs[0].UpdateDeplacer(joueurP.getPosX(),joueurP.getPosY(),joueurP.getHexagone());
+       // joueurs[0].deplacer();
+        DeplacerPersonnage(hexax,hexay);
+        joueurP.UpdateDeplacer(hexax,hexay, hexa);
+        ordreHexagoneActuel = hexa;
 
+        var testHexaActuel = joueurP.getHexagone();
+        console.log("HexaActuel :" + testHexaActuel);
+
+        var testPosition = joueurP.getPosition();
+        console.log("Position actuelle :"+testPosition);
+
+        /*
+        if(hexa == ordreHexagoneActuel+1 || hexa == ordreHexagoneActuel -1){
+        	ordreHexagoneActuel = hexa;
+        	console.log("HexagoneActuel après : "+ordreHexagoneActuel);
+        	DeplacerPersonnage(hexax,hexay);
+
+        }
+        
+        if(hexa == ordreHexagoneActuel-100 || hexa == ordreHexagoneActuel-101){
+
+        		ordreHexagoneActuel = hexa;
+        		console.log("HexagoneActuel après : "+ordreHexagoneActuel);
+        		DeplacerPersonnage(hexax,hexay);
+        } 
+        	
+        if(hexa == ordreHexagoneActuel+100 || hexa == ordreHexagoneActuel+99) {
+        	
+        	ordreHexagoneActuel = hexa;
+        	console.log("HexagoneActuel après : "+ordreHexagoneActuel);
+        	DeplacerPersonnage(hexax,hexay);
+		}
+		*/
+        //DeterminerDeplacement(hexa); 
+        
+    
+    //console.log("Clické !");
+}
+
+function DeplacerPersonnage(hexax,hexay){
+    
+    /*
+     d3.select(".image")
+     .attr("transform", "translate(" + hexax +","+ hexay +")");
+*/
+    var elem = d3.select("div.map");
+    elem.style("background-position", (centrex-hexax) + "px " + (centrey-hexay) + "px");
+    
+    elem.select("g")
+      .attr("transform", "translate(" + (centrex-hexax) +","+ (centrey-hexay) +")");
+      
+}
 
 function loadMap(width, height, MapRows, element){
 
@@ -89,12 +159,18 @@ function loadMap(width, height, MapRows, element){
                                 //Attache l'image du guepard à la map
                                  d3.select(".map").selectAll("svg")
                                 .append("svg:image")
-                                .attr("xlink:href", "img/guepard.png")
+                                .attr("xlink:href", "img/fille1.png")
                                 .attr("width", 50)
                                 .attr("height", 50)
                                 .attr("id","image")
-                                .attr("class","image");
-                                
+                                .attr("class","fille1");
+                                d3.select(".map").selectAll("svg")
+                                .append("svg:image")
+                                .attr("xlink:href", "img/garcon1.png")
+                                .attr("width", 50)
+                                .attr("height", 50)
+                                .attr("id","image")
+                                .attr("class","garcon1");
                                 placementCentre();
 				/*
 				 // Marche pas :(
@@ -115,6 +191,12 @@ function loadMap(width, height, MapRows, element){
 					.attr("d", function (d) {
 						return "M" + d.x + "," + d.y + hexbin.hexagon();
 					})
+					.attr("x",function(d){
+                        return d.x - hexRadius +10;
+                                        })
+                    .attr("y",function(d){
+                        return d.y - hexRadius +10;
+                    })
 					.attr("stroke", function (d,i) {
 						return "#000";
 					})

@@ -1,15 +1,25 @@
 //Fichier Main (dans ce fichier on appelle différentes fonctions permettant de lancer le jeu)
-var donnees;
+var joueurP;
 var pseudo;
+var debug = 0;
+
+//Création de personnage pour un test
+/*
+joueurP = creerJoueurPrincipal("Test", 'fille1');
+ajouterAutreJoueur("Test2", "garcon1");*/
+//
 
 $().ready(function(){
-	draw();
 	$("div.login input[type=button]").on("click", function(){
         pseudo = $("input#name").val();
-        var donnees = creerJoueurPrincipal(pseudo, 'fille1');
-        console.log(donnees);
-		rejoindre(donnees, "div.login");
+        joueurP = creerJoueurPrincipal(pseudo, 'fille1');
+        draw(joueurP);
+        console.log(joueurP);
+        rejoindre(joueurP, "div.login");
 	});
+	if (debug == 1){
+    	$("div.login").hide();
+    }
 	/*$(document).ajaxStop(function () {
 		//ajaxStop permet d'attendre la fin des différentes requêtes Ajax (chargement de map)
       console.log("test");
