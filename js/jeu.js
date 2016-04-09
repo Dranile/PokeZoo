@@ -34,6 +34,7 @@ function rejoindre(joueurP, elem){
 
 function attendreJoueur(element){
     $(element + " input").remove();
+    $(element + " form").remove();
     var elem = document.createElement("p");
     elem.appendChild(document.createTextNode("En attente de joueurs"));
     $(element).append(elem);
