@@ -10,6 +10,7 @@ ajouterAutreJoueur("Test2", "garcon1");*/
 //
 
 $().ready(function(){
+    // /!\ faire en sorte qu'on ne puisse cliquer qu'une fois !!!! 
 	$("div.login input[type=button]").on("click", function(){
         pseudo = $("input#name").val();
         avatar = $("input:checked[name=avatar]").val();

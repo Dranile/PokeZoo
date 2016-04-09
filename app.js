@@ -5,6 +5,7 @@ var port = 5000;
 var cors = require("cors");
 var app = express();
 var bodyParser = require('body-parser');
+var game = require("./server/game.js");
 
 app.use(bodyParser.urlencoded({
         extended: false,
@@ -33,13 +34,6 @@ var retour = null;
 var timeoutTime = 10000; //soit 10000 ms
 var plein = false;
 
-
-function initPartie(){
-	for(var i in players){
-		console.log(players[i]);
-	}
-	retour = players;
-}
 
 function updateTimeoutPlayer(index){
 	clearTimeout(tabTimeout[index]);
@@ -91,17 +85,23 @@ app.post("/game/joinGame", function(req,res){
 
 		if(players.length == playersMax){
 			plein = true;
-			console.log("lancement de la partie !!");
-			initPartie();
+			game.initPartie(players, function(obj){
+				players = obj;
+				retour = players;
+				console.log(players);
+				console.log("lancement de la partie !!");
+			});
 		}
 		res.end("bienvenue");
 	}
 });
 
 app.get("/game/getEtat", function(req,res){
-	res.setHeader('Content-Type', 'text/plain');
-	if(players.length == playersMax){
-		res.end("pret");
+	//res.setHeader('Content-Type', 'text/plain');
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	if(plein){
+		//res.end("pret");
+		res.json(retour);
 	}
 	else{
 		res.end(players.length + "/" + playersMax);

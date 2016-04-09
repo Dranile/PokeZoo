@@ -17,7 +17,7 @@ function rejoindre(joueurP, elem){
             method: "POST",
             url: "http://localhost:5000/game/joinGame",
             'Content-Type': 'application/json',
-            data:  envoiObj //Erreur ici, probablement impossible d'envoyer des objets avec des prototype, solution : creer une fonction qui renvoi un objet sans prototype ?
+            data:  envoiObj
             }).done(function( msg ) {
                 console.log( "Contrôle : " + msg );
                 if(msg == "bienvenue"){
@@ -43,9 +43,14 @@ function attendreJoueur(element){
         url: "http://localhost:5000/game/getEtat",
         async:true
         }).done(function( msg ) {
-            console.log( "Message : " + msg );
-            if(msg == "pret"){
+            console.log(msg);
+            if(typeof msg === "object"){
                 clearInterval(interval);
+                for(var i in msg){
+                    if(msg[i]["nom"] == joueurP["nom"]){
+                        joueurP.UpdateDeplacer(msg[i]["positionX"],msg[i]["positionY"],msg[i]["hexagone"]);
+                    }
+                }
                 lancerPartie(element);
             }
             else{
