@@ -70,6 +70,41 @@ function draw(joueurPrincipal) {
     context.fillStyle = "rgb(116,179,193)";
     context.fillRect(0.2*largeur, 0.8*hauteur, 0.6*largeur, 0.2*hauteur);
 
+    var compteur = 0;
+    var hauteurTexte = 0.85*hauteur;
+    $.ajax({
+        url: "http://localhost:5000/server/getType",
+        async: true
+    }).done(function(d) {
+        if(d == "null"){
+            console.log("test");
+            alert(" Le serveur semble déconnecté ou a eu une erreur :\nProblème de chargement des données");
+        }
+        else{
+            dataSelect = d;
+            dataSelect.forEach(function(d, indexLegende) {
+                var debutTexte = (0.21*largeur)+(indexLegende*(0.08*largeur));
+                if (/^Cage.*/.test(d.type)) {
+                    hauteurTexte = 0.90 * hauteur;
+                    debutTexte = (0.21*largeur)+((indexLegende-compteur-1)*(0.08*largeur));
+                } else if (d.type == "Viande") {
+                    hauteurTexte = 0.95 * hauteur;
+                    debutTexte = (0.21*largeur);
+                }
+                else {
+                    compteur = indexLegende;
+                }
+                context.fillStyle = d.couleur;
+                context.fillRect(debutTexte+5, hauteurTexte, 15, 15);
+                context.fillStyle = "rgb(255,255,255)";
+                context.font = "15px Arial";
+                context.fillText(d.type, debutTexte, hauteurTexte-4);
+            });
+        }
+    })
+    .fail(function(){
+        alert("Le serveur semble déconnecté ou a eu une erreur :\nImpossible de charger les données");
+    });
 
 
     var element = "mur"; //élément par défaut
