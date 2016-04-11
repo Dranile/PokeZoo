@@ -1,3 +1,8 @@
+// Define the size and position of indicator
+var total_width = 150;
+var total_height = 17;
+var radius = total_height/2;
+
 function draw(joueurPrincipal) {
     const largeur = document.documentElement.clientWidth;
     const hauteur = document.documentElement.clientHeight;
@@ -175,9 +180,6 @@ function progressText(ctx, x, y, width, height, radius, max) {
     ctx.restore();
 }
 
-
-
-// Define the size and position of indicator
-var total_width = 150;
-var total_height = 17;
-var radius = total_height/2;
+function redessiner(){
+    draw(joueurP);
+}
