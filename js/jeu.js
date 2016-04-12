@@ -80,7 +80,6 @@ function lancerPartie(elem){
             if(msg != null){
                 //Update des positions joueurs etc ...
                 // l'objet obtenu est un tableau de personnage (attention il n'y a paq de fonction prototype dedans ...)
-                console.log(msg)
             }
         })
         .fail(function(){
