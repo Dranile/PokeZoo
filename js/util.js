@@ -145,8 +145,14 @@ function loadMap(width, height, rayon, element){
             if (ligne % 2) x = hexagone[h][0]+(rayon-distance)*(2+2*colonne);
             else           x = hexagone[h][0]+(rayon-distance)*(1+2*colonne);
             y = distance*2 + hexagone[h][1]+(rayon-distance*2)*(1+2*ligne);
-            if (h == 0) d += "M"+x+","+y+" L";
-            else        d +=     x+","+y+" ";
+            if (h == 0){
+            	d += "M"+x+","+y+" L";
+            	var dx = x;
+            	var dy = y;	
+            } 
+            else{
+            	d +=     x+","+y+" ";
+            }
         }
         d += "Z";
         d3.select(".map svg g")
@@ -163,8 +169,8 @@ function loadMap(width, height, rayon, element){
 		   .on("mouseout", mout)
 		   .style("fill-opacity", 0)
 		   .on("click", gridClick)
-		   .attr("x",hexagone[0][0] - rayon +10)
-           .attr("y",hexagone[0][1] - rayon +10)
+		   .attr("x",dx- rayon +10)
+           .attr("y",dy- rayon +10)
 
 		}
 	}
