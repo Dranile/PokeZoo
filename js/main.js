@@ -13,11 +13,18 @@ $().ready(function(){
     // /!\ faire en sorte qu'on ne puisse cliquer qu'une fois !!!! 
 	$("div.login input[type=button]").on("click", function(){
         pseudo = $("input#name").val();
-        avatar = $("input:checked[name=avatar]").val();
-        joueurP = creerJoueurPrincipal(pseudo, avatar);
-        console.log(joueurP);
-        draw(joueurP);
-        rejoindre(joueurP, "div.login");
+        if ($("input:checked[name=avatar]").val() == null){
+          alert("Veuillez choisir un avatar.");
+          return;
+        }
+        else {
+          avatar = $("input:checked[name=avatar]").val();
+          joueurP = creerJoueurPrincipal(pseudo, avatar);
+          draw(joueurP);
+          rejoindre(joueurP, "div.login");
+        }
+        
+        
 	});
 	if (debug == 1){
     	$("div.login").hide();
