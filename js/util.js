@@ -106,7 +106,33 @@ function DeplacerPersonnage(hexax,hexay){
       
 }
 
+//Positionne les images de tous les personnages
 
+function PositionnerImages(){
+    
+    
+    //Placement du joueur principal
+    d3.select(".map").selectAll("svg")
+                                .append("svg:image")
+                                 .attr("xlink:href", "img/"+JoueurP.image)
+                                 .attr("width", 50)
+                                 .attr("height", 50)
+                                .attr("id","image")
+                                 .attr("class","JoueurPrincipal");
+
+
+ajouterAutreJoueur('roxas', 'garcon2');
+
+    d3.select(".map").selectAll("svg")
+                                .append("svg:image")
+                                 .attr("xlink:href", "img/"+joueurs[0].image)
+                                 .attr("width", 50)
+                                 .attr("height", 50)
+                                .attr("id","image")
+                                 .attr("class","Joueur");
+
+
+}
 function creeHexagone(rayon) {
     var points = new Array();
     for (var i = 0; i < 6; ++i) {

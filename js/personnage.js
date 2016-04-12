@@ -79,7 +79,7 @@ function Joueur(nom, image){
     this.animaux = [];
 }
 
-Joueur.prototype.UpdateDeplacer = function(posX, posY,hexa) {
+Joueur.prototype.UpdateDeplacer = function(hexa) {
     this.positionX = posX;
     this.positionY = posY;
     this.hexagone = hexa;
