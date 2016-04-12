@@ -119,7 +119,7 @@ function creeHexagone(rayon) {
 }
 
 
-function loadMap(width, height, rayon, nbLignes, element){
+function loadMap(width, height, rayon, element){
 	var nbLignes = height/(1.5*rayon) + 2;
 	var nbColonnes = width / (1.74*rayon);
 	// var coef = width / height;
@@ -129,6 +129,8 @@ function loadMap(width, height, rayon, nbLignes, element){
        //console.log("distance = "+distance);
 
    d3.select(".map").append("svg")
+   	.attr("xmlns", "http://www.w3.org/2000/svg")
+   	.attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
      .attr("width", width)
    	 .attr("height", height)
    	 .append("g");
@@ -160,7 +162,9 @@ function loadMap(width, height, rayon, nbLignes, element){
 		   .on("mouseover", mover)
 		   .on("mouseout", mout)
 		   .style("fill-opacity", 0)
-		   .on("click", gridClick);
+		   .on("click", gridClick)
+		   .attr("x",hexagone[0][0] - rayon +10)
+           .attr("y",hexagone[0][1] - rayon +10)
 
 		}
 	}

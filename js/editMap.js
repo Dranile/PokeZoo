@@ -9,7 +9,6 @@ var dataSelect; // Variable du sélecteur
 // constantes pour la grille
 var width = 6400;
 var height = 3224;
-var MapRows = 100 ; //70
 var rayon = 25; //30
 //constantes concernant le déplacement de la carte
 var x = 0, y = 0;
@@ -94,7 +93,7 @@ $().ready(function(){
                 var el = d3.select(".menu li input:first-child")
                            .attr("checked", "true");
 
-                loadMap(width, height, rayon,MapRows, element);
+                loadMap(width, height, rayon, element);
             }
         })
         .fail(function(){
