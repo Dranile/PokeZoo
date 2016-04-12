@@ -77,7 +77,10 @@ function gridClick(d){
            
          }
          
-        DeplacerPersonnage(hexax,hexay);
+        
+       }
+
+       DeplacerPersonnage(hexax,hexay);
         joueurP.UpdateDeplacer(hexax,hexay, hexa);
         ordreHexagoneActuel = hexa;
 
@@ -86,8 +89,6 @@ function gridClick(d){
 
         var testPosition = joueurP.getPosition();
         console.log("Position actuelle :"+testPosition);
-       }
-
 
         /*
         if(hexa == ordreHexagoneActuel+1 || hexa == ordreHexagoneActuel -1){

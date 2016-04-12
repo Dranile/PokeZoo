@@ -80,8 +80,7 @@ function Joueur(nom, image){
 }
 
 Joueur.prototype.UpdateDeplacer = function(hexa) {
-    this.positionX = posX;
-    this.positionY = posY;
+   
     this.hexagone = hexa;
 };
 
