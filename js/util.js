@@ -42,17 +42,42 @@ function placementCentre(){
 }
 
 function gridClick(d){
-        
+       // console.log(this);
+       // console.log("class : " + this.getAttribute("class"));
+       // console.log("type : " + this.getAttribute("class").split(" ")[1]);
+        var terrain = this.getAttribute("class").split(" ")[1];
         var hexa = this.getAttribute("ordreHexagone");
         var hexax = this.getAttribute("x");
         var hexay = this.getAttribute("y");
+        
         /*
+        
+        
         console.log("Hexa : " + hexa);
        var testHexaActuel = joueurP.getHexagone();
         console.log("HexaActuel :" + testHexaActuel);
         */
         //joueurs[0].UpdateDeplacer(joueurP.getPosX(),joueurP.getPosY(),joueurP.getHexagone());
        // joueurs[0].deplacer();
+      if (terrain == "mur") {
+        alert("impossible de se deplacer sur cette case");  
+       }
+       else {
+         if (terrain == "viande" || terrain == "poisson"){
+           joueurP.prendreNourriture(terrain);
+           redessiner();
+         }
+         if (terrain == "guepard" || terrain == "loup" || terrain == "lion" || terrain == "ours"){
+           for (i in animaux){
+             if (animaux[i].nom == terrain){
+               joueurP.nourrir(animaux[i]);
+               redessiner();
+             }
+
+           }
+           
+         }
+         
         DeplacerPersonnage(hexax,hexay);
         joueurP.UpdateDeplacer(hexax,hexay, hexa);
         ordreHexagoneActuel = hexa;
@@ -62,6 +87,8 @@ function gridClick(d){
 
         var testPosition = joueurP.getPosition();
         console.log("Position actuelle :"+testPosition);
+       }
+
 
         /*
         if(hexa == ordreHexagoneActuel+1 || hexa == ordreHexagoneActuel -1){

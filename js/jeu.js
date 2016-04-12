@@ -43,7 +43,7 @@ function attendreJoueur(element){
         url: "http://localhost:5000/game/getEtat",
         async:true
         }).done(function( msg ) {
-            console.log(msg);
+            //console.log(msg);
             if(typeof msg === "object"){
                 clearInterval(interval);
                 for(var i in msg){
@@ -80,7 +80,6 @@ function lancerPartie(elem){
             if(msg != null){
                 //Update des positions joueurs etc ...
                 // l'objet obtenu est un tableau de personnage (attention il n'y a paq de fonction prototype dedans ...)
-                console.log(msg)
             }
         })
         .fail(function(){
