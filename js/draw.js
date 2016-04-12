@@ -110,9 +110,9 @@ function draw(joueurPrincipal) {
     var element = "mur"; //élément par défaut
     var width = 6400;
     var height = 3224;
-    var MapRows = 50;
+    var rayon = 25;
 
-    loadMap(width, height, MapRows, element);
+    loadMap(width, height, rayon,element);
     //redessiner a la fin dun tour
 }
 
