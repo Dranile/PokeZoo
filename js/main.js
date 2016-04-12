@@ -1,7 +1,7 @@
 //Fichier Main (dans ce fichier on appelle différentes fonctions permettant de lancer le jeu)
 var joueurP;
 var pseudo;
-var debug = 0;
+var debug = 1;
 
 //Création de personnage pour un test
 /*
@@ -32,6 +32,7 @@ $().ready(function(){
         var avatar = "fille1";
         joueurP = creerJoueurPrincipal(pseudo, avatar);
         draw(joueurP);
+        PositionnerImages();
     }
 	/*$(document).ajaxStop(function () {
 		//ajaxStop permet d'attendre la fin des différentes requêtes Ajax (chargement de map)

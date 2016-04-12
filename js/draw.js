@@ -4,6 +4,18 @@ var total_height = 17;
 var radius = total_height/2;
 
 function draw(joueurPrincipal) {
+    dessiner(joueurPrincipal);
+
+    var element = "mur"; //élément par défaut
+    var width = 6400;
+    var height = 3224;
+    var rayon = 25;
+
+    loadMap(width, height, rayon,element);
+    //redessiner a la fin dun tour
+}
+
+function dessiner(joueurPrincipal){
     const largeur = document.documentElement.clientWidth;
     const hauteur = document.documentElement.clientHeight;
 
@@ -105,15 +117,6 @@ function draw(joueurPrincipal) {
     .fail(function(){
         alert("Le serveur semble déconnecté ou a eu une erreur :\nImpossible de charger les données");
     });
-
-
-    var element = "mur"; //élément par défaut
-    var width = 6400;
-    var height = 3224;
-    var rayon = 25;
-
-    loadMap(width, height, rayon,element);
-    //redessiner a la fin dun tour
 }
 
 function roundRect(ctx, x, y, width, height, radius) {
@@ -216,5 +219,5 @@ function progressText(ctx, x, y, width, height, radius, max) {
 }
 
 function redessiner(){
-    draw(joueurP);
+    dessiner(joueurP);
 }

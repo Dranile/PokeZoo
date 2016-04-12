@@ -32,8 +32,8 @@ function ordreHexagone(){
     ordreHexagon++;
     return ordreHexagon;
 }
-var centrex = 389.97831388645;
-var centrey = 250.7661851649874;
+var centrex;
+var centrey;
 var textvar = 10;
 //Function pour placer le personnage au centre
 function placementCentre(){
@@ -41,6 +41,8 @@ function placementCentre(){
     d3.select(".fille1")
      .attr("transform", "translate(" + centrex +","+ centrey +")");
 }
+
+
 
 function gridClick(d){
        // console.log(this);
@@ -59,7 +61,7 @@ function gridClick(d){
         //joueurs[0].UpdateDeplacer(joueurP.getPosX(),joueurP.getPosY(),joueurP.getHexagone());
        // joueurs[0].deplacer();
       if (terrain == "mur") {
-        alert("impossible de se deplacer sur cette case");  
+        //alert("impossible de se deplacer sur cette case");  
        }
        else {
          if (terrain == "viande" || terrain == "poisson"){
@@ -76,13 +78,16 @@ function gridClick(d){
            }
            
          }
+         DeplacerPersonnage(hexax,hexay);
+        joueurP.UpdateDeplacer(hexa);
+        ordreHexagoneActuel = hexa;
          
         
        }
 
+       
        DeplacerPersonnage(hexax,hexay);
-        joueurP.UpdateDeplacer(hexax,hexay, hexa);
-        ordreHexagoneActuel = hexa;
+        joueurP.UpdateDeplacer(hexa);
 
         var testHexaActuel = joueurP.getHexagone();
         console.log("HexaActuel :" + testHexaActuel);
@@ -129,7 +134,11 @@ function DeplacerPersonnage(hexax,hexay){
     
     elem.select("g")
       .attr("transform", "translate(" + (centrex-hexax) +","+ (centrey-hexay) +")");
-      
+
+  /*
+    d3.select(".Joueur")
+     .attr("transform", "translate(" + Joueurx +","+ Joueury +")");
+  */    
 }
 
 
@@ -195,8 +204,8 @@ function loadMap(width, height, rayon, element){
 		   .on("mouseout", mout)
 		   .style("fill-opacity", 0)
 		   .on("click", gridClick)
-		   .attr("x",dx- rayon +10)
-           .attr("y",dy- rayon +10)
+		   .attr("x",dx- rayon)
+           .attr("y",dy- rayon +20)
 
 		}
 	}
@@ -239,15 +248,25 @@ function PositionnerImages(){
     //Placement du joueur principal
     d3.select(".map").selectAll("svg")
                                 .append("svg:image")
-                                 .attr("xlink:href", "img/"+JoueurP.image)
+                                 .attr("xlink:href", "img/"+joueurP.image)
                                  .attr("width", 50)
                                  .attr("height", 50)
                                 .attr("id","image")
                                  .attr("class","JoueurPrincipal");
 
+//On place le joueur principal à son point de départ
+joueurP.hexagone = 1045; 
+
+var HexaCentre = document.querySelector("[ordreHexagone='"+joueurP.hexagone+"'");
+centrex = HexaCentre.getAttribute("x");
+centrey = HexaCentre.getAttribute("y");
+
+d3.select(".JoueurPrincipal")
+     .attr("transform", "translate(" + centrex +","+ centrey +")");
 
 ajouterAutreJoueur('roxas', 'garcon2');
-
+//On place les autres joueurs à leur point de départ
+joueurs[0].hexagone = 1046;
     d3.select(".map").selectAll("svg")
                                 .append("svg:image")
                                  .attr("xlink:href", "img/"+joueurs[0].image)
@@ -255,6 +274,13 @@ ajouterAutreJoueur('roxas', 'garcon2');
                                  .attr("height", 50)
                                 .attr("id","image")
                                  .attr("class","Joueur");
+
+var HexaCentre = document.querySelector("[ordreHexagone='"+joueurs[0].hexagone+"'");
+var Joueurx = HexaCentre.getAttribute("x");
+var Joueury = HexaCentre.getAttribute("y");
+
+d3.select(".Joueur")
+     .attr("transform", "translate(" + Joueurx +","+ Joueury +")");
 
 
 }
