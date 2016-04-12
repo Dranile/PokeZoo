@@ -48,7 +48,7 @@ function attendreJoueur(element){
                 clearInterval(interval);
                 for(var i in msg){
                     if(msg[i]["nom"] == joueurP["nom"]){
-                        joueurP.UpdateDeplacer(msg[i]["positionX"],msg[i]["positionY"],msg[i]["hexagone"]);
+                        joueurP.UpdateDeplacer(msg[i]["hexagone"]);
                     }
                 }
                 lancerPartie(element);
