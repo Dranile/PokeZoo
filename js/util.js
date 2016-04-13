@@ -80,16 +80,16 @@ function gridClick(d){
 			}
 
 		}
-
 		
-		DeplacerPersonnage(hexa);
-		joueurP.UpdateDeplacer(ordreHexa);
-		ordreHexagoneActuel = ordreHexa;
+			DeplacerPersonnage(hexa);
+			joueurP.UpdateDeplacer(ordreHexa);
+			ordreHexagoneActuel = ordreHexa;
+		
 
 
 	}
 
-	
+	console.log(ordreHexa);
 
 	/*
 	 if(hexa == ordreHexagoneActuel+1 || hexa == ordreHexagoneActuel -1){
@@ -118,6 +118,27 @@ function gridClick(d){
 
 	//console.log("Clické !");
 }
+
+function VerificationProximité(ordreHexa){
+
+	var hexaActuel = joueurP.hexagone;
+	if(ordreHexa == hexaActuel+147 || ordreHexa == hexaActuel+148 || ordreHexa == hexaActuel +149
+		|| ordreHexa == hexaActuel +1 || ordreHexa == hexaActuel -1 || ordreHexa == hexaActuel -147
+		|| ordreHexa == hexaActuel-148 || ordreHexa == hexaActuel -149){
+
+		console.log("OK");
+	return true;
+	}
+
+	else{
+
+		console.log("PAS OK")
+		return false;
+	}
+
+		
+
+}
 //Fonction permettant d'effectuer le mouvement du personnage principal
 function DeplacerPersonnage(hexa){
 
@@ -125,7 +146,7 @@ function DeplacerPersonnage(hexa){
 	 d3.select(".image")
 	 .attr("transform", "translate(" + hexax +","+ hexay +")");
 	 */
-	 
+
 	 //On récupère les positions du centre du nouvel hexagone du personnage principal
 	 var hexax = hexa.getAttribute("x");
 	var hexay = hexa.getAttribute("y");
