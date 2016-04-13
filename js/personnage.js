@@ -3,8 +3,6 @@ var joueurPrincipal;
 
 function Personnage(nom){
     this.nom = nom;
-    this.initiative = 0;
-    this.deplacement =  0;
     this.positionX = 0;
     this.positionY = 0;
     this.hexagone = 0;
@@ -70,6 +68,16 @@ Animal.prototype.nourriPar = function(joueur){
         }
     }
 };
+Animal.prototype.update = function(animal){
+    if (animal.nom == this.nom) {
+        this.positionX = animal.positionX;
+        this.positionY = animal.positionY;
+        this.hexagone = animal.hexagone;
+        this.loyaute = animal.loyaute;
+        this.joueurAllie = animal.joueurAllie;
+        this.niveau = animal.niveau;
+    }
+};
 
 // JOUEURS
 function Joueur(nom, image){
@@ -80,7 +88,6 @@ function Joueur(nom, image){
 }
 
 Joueur.prototype.UpdateDeplacer = function(hexa) {
-   
     this.hexagone = hexa;
 };
 
@@ -100,14 +107,13 @@ Joueur.prototype.getPosition = function(){
     
 };
 
-Joueur.prototype.getPosX = function(){
+/*Joueur.prototype.getPosX = function(){
     return this.positionX;
-
 };
 
 Joueur.prototype.getPosY = function(){
     return this.positionY;
-};
+};*/
 
 Joueur.prototype.prendreNourriture = function(nourriture){
     if (this.nourriture == ""){
@@ -125,6 +131,10 @@ Joueur.prototype.nourrir = function(animal){
     else {
         alert("impossible de nourrir "+animal.nom);
     }
+};
+Joueur.prototype.update = function(joueur){
+    this.UpdateDeplacer(joueur.hexagone);
+    this.animaux = joueur.animaux;
 };
 
 //FONCTIONS POUR COMMUNICATION SERVEUR
