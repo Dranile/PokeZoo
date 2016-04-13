@@ -236,7 +236,7 @@ function loadMap(width, height, rayon, element){
 					});
 			}
 			else{
-				alert("Il y a eu une erreur");
+				alert("la carte n'est pas initialisée, veuillez contacter un administrateur.");
 			}
 		})
 		.fail(function(){
