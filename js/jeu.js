@@ -83,18 +83,18 @@ function lancerPartie(elem){
             if(msg != null){
                 //Update des positions joueurs etc ...
                 // l'objet obtenu est un tableau de personnage (attention il n'y a paq de fonction prototype dedans ...)
-                // for(var i in msg){
-                //     if(msg[i]["nom"] == joueurP["nom"]){
-                //         joueurP.update(msg[i]);
-                //     }
-                //     else{
-                //         for(var j in joueurs){
-                //             if(joueurs[j]["nom"] == msg[i]["nom"]){
-                //                 joueurs[j].update(msg[i]);
-                //             }
-                //         }
-                //     }
-                // }
+                for(var i in msg){
+                    if(msg[i]["nom"] == joueurP["nom"]){
+                        joueurP.update(msg[i]);
+                    }
+                    else{
+                        for(var j in joueurs){
+                            if(joueurs[j]["nom"] == msg[i]["nom"]){
+                                joueurs[j].update(msg[i]);
+                            }
+                        }
+                    }
+                }
                 redessiner();
             }
         })
