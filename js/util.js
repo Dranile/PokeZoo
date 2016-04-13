@@ -266,7 +266,6 @@ function PositionnerImages(){
 	d3.select(".JoueurPrincipal")
 		.attr("transform", "translate(" + centrex +","+ centrey +")");
 
-	ajouterAutreJoueur('roxas', 'garcon2');
 //On place les autres joueurs à leur point de départ
 	joueurs[0].hexagone = 1046;
 	d3.select(".map").selectAll("svg")

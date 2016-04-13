@@ -3,9 +3,7 @@ var total_width = 150;
 var total_height = 17;
 var radius = total_height/2;
 
-function draw(joueurPrincipal) {
-    dessiner(joueurPrincipal);
-
+function draw() {
     var element = "mur"; //élément par défaut
     var width = 6400;
     var height = 3224;

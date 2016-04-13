@@ -10,6 +10,7 @@ ajouterAutreJoueur("Test2", "garcon1");*/
 //
 
 $().ready(function(){
+  draw();
     // /!\ faire en sorte qu'on ne puisse cliquer qu'une fois !!!! 
 	$("div.login input[type=button]").on("click", function(){
         pseudo = $("input#name").val();
@@ -20,7 +21,7 @@ $().ready(function(){
         else {
           avatar = $("input:checked[name=avatar]").val();
           joueurP = creerJoueurPrincipal(pseudo, avatar);
-          draw(joueurP);
+          dessiner(joueurP);
           rejoindre(joueurP, "div.login");
         }
         
@@ -31,7 +32,8 @@ $().ready(function(){
         var pseudo = "Toto";
         var avatar = "fille1";
         joueurP = creerJoueurPrincipal(pseudo, avatar);
-        draw(joueurP);
+        ajouterAutreJoueur('roxas', 'garcon2');
+        dessiner(joueurP);
         PositionnerImages();
     }
 	/*$(document).ajaxStop(function () {

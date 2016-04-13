@@ -129,7 +129,6 @@ app.get("/server/getType", function(req, res){
 			return console.log(err);
 		}
 		data = JSON.parse(data);
-	  	console.log(data);
 	  	res.json(data);
 		});
 });
