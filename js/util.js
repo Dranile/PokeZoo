@@ -79,10 +79,10 @@ function gridClick(){
 			}
 
 		}
-		
-			DeplacerPersonnage(hexa,0);
-			joueurP.UpdateDeplacer(ordreHexa);
-			
+			if (VerificationProximité(parseInt(ordreHexa))){
+				DeplacerPersonnage(hexa,0);
+				joueurP.UpdateDeplacer(ordreHexa);
+			}
 		
 
 
@@ -120,18 +120,18 @@ function gridClick(){
 
 function VerificationProximité(ordreHexa){
 
-	var hexaActuel = joueurP.hexagone;
+	var hexaActuel = parseInt(joueurP.hexagone);
 	if(ordreHexa == hexaActuel+147 || ordreHexa == hexaActuel+148 || ordreHexa == hexaActuel +149
 		|| ordreHexa == hexaActuel +1 || ordreHexa == hexaActuel -1 || ordreHexa == hexaActuel -147
 		|| ordreHexa == hexaActuel-148 || ordreHexa == hexaActuel -149){
 
-		console.log("OK");
+		//alert("OK");
 	return true;
 	}
 
 	else{
 
-		console.log("PAS OK")
+		//alert("PAS OK")
 		return false;
 	}
 
