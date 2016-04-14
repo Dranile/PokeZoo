@@ -1,5 +1,5 @@
 //Variable pour numéroter les hexagones
-var ordreHexagon = 0;
+var ordreHexagon = -1;
 var ordreHexagoneActuel = 507;
 //variable pour placer le personnage au centre
 var xPersonnage = 485 , yPersonnage = 310;
@@ -44,7 +44,7 @@ function placementCentre(){
 
 
 
-function gridClick(d){
+function gridClick(){
 	// console.log(this);
 	// console.log("class : " + this.getAttribute("class"));
 	// console.log("type : " + this.getAttribute("class").split(" ")[1]);
@@ -177,7 +177,7 @@ function RepositionnerImages(hexa){
 	var xprec = parseInt(hexaPrec.getAttribute("x"));
 	var yprec = parseInt(hexaPrec.getAttribute("y"));
 	
-	for(var i= 0; i<2;i++){
+	for(var i in joueurs){
 
 		//On récupère l'image du joueur que l'on souhaite décaler
 	var joueur = document.querySelector("[id='"+joueurs[i].nom+"'");
@@ -330,7 +330,7 @@ function PositionnerImages(){
 
 //On place les autres joueurs à leur point de départ
 	
-	for(var i = 0;i <2;i++){
+	for(var i in joueurs){
 
 		d3.select(".map").selectAll("svg")
 		.append("svg:image")

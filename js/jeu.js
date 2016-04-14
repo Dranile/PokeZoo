@@ -51,9 +51,11 @@ function attendreJoueur(element){
                         joueurP.update(msg[i]);
                     }
                     else{
-                        ajouterAutreJoueur(msg[i]["nom"], msg[i]["image"]);
+                        var image = msg[i]["image"].split('.');
+                        ajouterAutreJoueur(msg[i]["nom"],image[0]);
                     }
                 }
+                PositionnerImages();
                 lancerPartie(element);
             }
             else{
@@ -95,6 +97,9 @@ function lancerPartie(elem){
                         }
                     }
                 }
+
+                var hexa = document.querySelector("[ordreHexagone='"+joueurP.hexagone+"'");
+                RepositionnerImages(hexa)
                 redessiner();
             }
         })
