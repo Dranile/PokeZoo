@@ -53,9 +53,13 @@ function attendreJoueur(element){
                     else{
                         var image = msg[i]["image"].split('.');
                         ajouterAutreJoueur(msg[i]["nom"],image[0]);
+                        joueurs[joueurs.length-1].update(msg[i]);
                     }
                 }
                 PositionnerImages();
+                var hexa = document.querySelector("[ordreHexagone='"+joueurP.hexagone+"'");
+
+                DeplacerPersonnage(hexa,1);
                 lancerPartie(element);
             }
             else{
@@ -99,7 +103,8 @@ function lancerPartie(elem){
                 }
 
                 var hexa = document.querySelector("[ordreHexagone='"+joueurP.hexagone+"'");
-                RepositionnerImages(hexa)
+                updateDeplacement();
+                
                 redessiner();
             }
         })

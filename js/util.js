@@ -1,8 +1,7 @@
 //Variable pour numéroter les hexagones
 var ordreHexagon = -1;
-var ordreHexagoneActuel = 507;
-//variable pour placer le personnage au centre
-var xPersonnage = 485 , yPersonnage = 310;
+
+
 //Fonction quand on passe la souris sur une case
 
 
@@ -81,9 +80,9 @@ function gridClick(){
 
 		}
 		
-			DeplacerPersonnage(hexa);
+			DeplacerPersonnage(hexa,0);
 			joueurP.UpdateDeplacer(ordreHexa);
-			ordreHexagoneActuel = ordreHexa;
+			
 		
 
 
@@ -140,7 +139,7 @@ function VerificationProximité(ordreHexa){
 
 }
 //Fonction permettant d'effectuer le mouvement du personnage principal
-function DeplacerPersonnage(hexa){
+function DeplacerPersonnage(hexa,start){
 
 	/*
 	 d3.select(".image")
@@ -159,20 +158,26 @@ function DeplacerPersonnage(hexa){
 	elem.select("g")
 		.attr("transform", "translate(" + (centrex-hexax) +","+ (centrey-hexay) +")");
 
-	 RepositionnerImages(hexa);
+	 RepositionnerImages(hexa,start);
 	 
 }
 /*Fonction permettant de repositionner les images de tous les autres joueurs et des animaux après un déplacement
 du joueur principal*/
-function RepositionnerImages(hexa){
+function RepositionnerImages(hexa,start){
 
 	var hexax = hexa.getAttribute("x");
 	var hexay = hexa.getAttribute("y");
+	var	hexaPrec;
 
-
-	//On récupère l'hexagone sur lequel était le Joueur principal avant de se déplacer	
-	var	hexaPrec = document.querySelector("[ordreHexagone='"+joueurP.hexagone+"'");
-	
+	//On récupère l'hexagone sur lequel était le Joueur principal avant de se déplacer
+	if(start == 0){	
+		console.log(start);
+		hexaPrec = document.querySelector("[ordreHexagone='"+joueurP.hexagone+"'");
+	}
+	else{
+		console.log(start);
+		hexaPrec = document.querySelector("[ordreHexagone='"+1045+"'");
+	}
 	//On récupère les valeurs du centre de l'hexagone sur lequel était le joueur principal
 	var xprec = parseInt(hexaPrec.getAttribute("x"));
 	var yprec = parseInt(hexaPrec.getAttribute("y"));
@@ -204,6 +209,30 @@ function RepositionnerImages(hexa){
 	}
 	
 
+}
+
+function updateDeplacement(){
+
+	for(var i in joueurs){
+
+		//On récupère l'image du joueur que l'on souhaite décaler
+	var joueur = document.querySelector("[id='"+joueurs[i].nom+"'");
+	//On récupère les valeurs du décalage déjà subit par l'image
+	var décalagex = parseInt(joueur.getAttribute("décalagex"));
+	var décalagey = parseInt(joueur.getAttribute("décalagey"));
+
+	//On récupère l'hexagone sur lequel se situe le joueur à décaler
+	var HexaCentre = document.querySelector("[ordreHexagone='"+joueurs[i].hexagone+"'");
+	//On récupère les valeurs du centre de l'hexagone sur lequel se situe le joueur à décaler
+	var Joueurx = parseInt(HexaCentre.getAttribute("x"));
+	var Joueury = parseInt(HexaCentre.getAttribute("y"));
+	
+	//On bouge l'image pour la décaler et on change les valeurs de décalage de l'image
+	 d3.select("#"+joueurs[i].nom)
+	 .attr("transform", "translate(" +  (Joueurx+décalagex) +","+ (Joueury+décalagey) +")")
+	 .attr("décalagex",décalagex)
+	 .attr("décalagey",décalagey);
+	}
 }
 
 function creeHexagone(rayon) {
@@ -321,7 +350,7 @@ function PositionnerImages(){
 //On place le joueur principal à son point de départ
 	
 
-	var HexaCentre = document.querySelector("[ordreHexagone='"+joueurP.hexagone+"'");
+	var HexaCentre = document.querySelector("[ordreHexagone='"+1045+"'");
 	centrex = HexaCentre.getAttribute("x");
 	centrey = HexaCentre.getAttribute("y");
 
