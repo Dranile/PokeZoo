@@ -38,8 +38,8 @@ Animal.prototype.definirJoueurAllie = function(){
 
         }
 
-        if(joueurPrincipal.nom == nouvelAllie){
-            this.joueurAllie = joueurPrincipal;
+        if(joueurP.nom == nouvelAllie){
+            this.joueurAllie = joueurP;
         }
         else {
             for (var j in joueurs){
