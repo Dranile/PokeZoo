@@ -137,6 +137,49 @@ Joueur.prototype.update = function(joueur){
     this.animaux = joueur.animaux;
 };
 
+//Animal.prototype.listeHexaEligible = function() {
+Joueur.prototype.listeHexaEligible = function() { //mis sur joueur pour test vu que aucun animal initialisé
+    var liste = [];
+    var posAnimal = parseInt(this.hexagone);
+    var numHexaHG, numHexaHD, numHexaG, numHexaD, numHexaBG, numHexaBD;
+
+    if ((parseInt(posAnimal/148)%2) == 0){ //148 hexagone par ligne //si le numero de ligne est pair (en commencant par 0)
+        numHexaHG = posAnimal-149;
+        numHexaHD = posAnimal-148;
+        numHexaG = posAnimal-1;
+        numHexaD = posAnimal+1;
+        numHexaBG = posAnimal+147;
+        numHexaBD = posAnimal+148;
+    }
+    else {
+        numHexaHG = posAnimal-148;
+        numHexaHD = posAnimal-147;
+        numHexaG = posAnimal-1;
+        numHexaD = posAnimal+1;
+        numHexaBG = posAnimal+148;
+        numHexaBD = posAnimal+149;
+    }
+
+    var tableauProximité = [numHexaHG, numHexaHD, numHexaG, numHexaD, numHexaBG, numHexaBD];
+    var terrain;
+    for(var i in tableauProximité){
+        terrain = document.querySelector("[ordreHexagone='"+tableauProximité[i]+"'").getAttribute("class").split(" ")[1];
+        //console.log("hexagone " + tableauProximité[i] + " terrain : " + terrain);
+        if (terrain == "chemin"){
+            //liste.push(document.querySelector("[ordreHexagone='"+tableauProximité[i]+"'"));
+            liste.push(tableauProximité[i]);
+        }
+    }
+    //var hexa = document.querySelector("[ordreHexagone='"+posAnimal+"'");
+    //var terrain = document.querySelector("[ordreHexagone='"+posAnimal+"'").getAttribute("class").split(" ")[1];
+    //console.log("hexagone du joueur : " + posAnimal);
+    //console.log("nombre d'hexagone eligible : " + liste.length);
+    /*for(var j in liste){
+        console.log(liste[j] + "");
+    }*/
+    return liste;
+};
+
 //FONCTIONS POUR COMMUNICATION SERVEUR
 function creerJoueurPrincipal(nom, avatar){
     return new Joueur(nom, avatar);

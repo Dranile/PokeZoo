@@ -79,12 +79,13 @@ function gridClick(){
 			}
 
 		}
-			if (VerificationProximité(parseInt(ordreHexa))){
-				DeplacerPersonnage(hexa,0);
-				joueurP.UpdateDeplacer(ordreHexa);
-			}
-		
+		if (VerificationProximité(parseInt(ordreHexa))){
+			DeplacerPersonnage(hexa,0);
+			joueurP.UpdateDeplacer(ordreHexa);
+			//ajout pour test fonction listeHexaEligible()
+			joueurP.listeHexaEligible();
 
+		}
 
 	}
 
@@ -118,26 +119,28 @@ function gridClick(){
 	//console.log("Clické !");
 }
 
+/**
+ * @return {boolean}
+ */
 function VerificationProximité(ordreHexa){
-
 	var hexaActuel = parseInt(joueurP.hexagone);
 	if(ordreHexa == hexaActuel+147 || ordreHexa == hexaActuel+148 || ordreHexa == hexaActuel +149
 		|| ordreHexa == hexaActuel +1 || ordreHexa == hexaActuel -1 || ordreHexa == hexaActuel -147
 		|| ordreHexa == hexaActuel-148 || ordreHexa == hexaActuel -149){
+		//suite a mes propre test pkoi 8 tests? il n'y a que 6 hexagone adjacent a une case Oo
+		//ok jai compri pkoi, cest a cause du decalage entre les lignes
+		//mais du coup il est pas impossible suivant la map de pouvoir aller sur une case non adjacente ...
+		//calculs des deux cas refaits et verifies dans listeHexagoneEligible() dans personnage.js
 
 		//alert("OK");
-	return true;
+		return true;
 	}
-
 	else{
-
 		//alert("PAS OK")
 		return false;
 	}
-
-		
-
 }
+
 //Fonction permettant d'effectuer le mouvement du personnage principal
 function DeplacerPersonnage(hexa,start){
 
@@ -147,7 +150,7 @@ function DeplacerPersonnage(hexa,start){
 	 */
 
 	 //On récupère les positions du centre du nouvel hexagone du personnage principal
-	 var hexax = hexa.getAttribute("x");
+	var hexax = hexa.getAttribute("x");
 	var hexay = hexa.getAttribute("y");
 
 	//Déplacement du Background
@@ -158,7 +161,7 @@ function DeplacerPersonnage(hexa,start){
 	elem.select("g")
 		.attr("transform", "translate(" + (centrex-hexax) +","+ (centrey-hexay) +")");
 
-	 RepositionnerImages(hexa,start);
+	RepositionnerImages(hexa,start);
 	 
 }
 /*Fonction permettant de repositionner les images de tous les autres joueurs et des animaux après un déplacement
