@@ -136,7 +136,6 @@ $().ready(function(){
                 console.log(d); //Pour obtenir le x, y
                 var classe = this.getAttribute("class");
                 classe = classe.substring(8);
-                //console.log(classe); //pour obtenir la classe
                 var obj = {
                     "type":classe,
                     "color":this.style.fill

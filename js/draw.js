@@ -39,7 +39,6 @@ function dessiner(joueurPrincipal){
     context.fillStyle = "rgb(0,0,0)";
     var tailleAnimaux = 0.12*hauteur;
     animaux.forEach(function(animal, index) {
-        //context.fillText(Animal, 15, (index+1)*30);
         var image = new Image();
         image.src = ('img/'+animal.nom+'.png');
         image.onload = function () {
@@ -156,8 +155,6 @@ function progressBarColore(ctx, x, y, width, height, radius, max, couleur){
     progressBarRect(ctx, x, y, width, height, radius, max);
 }
 function progressBarRect(ctx, x, y, width, height, radius, max) {
-    //ctx.fillStyle = "rgb(21,48,53)"; //couleur remplissage barre
-    //ctx.fillStyle = "rgb(255,0,0)";
     // deplacement for chord drawing
     var offset = 0;
     ctx.beginPath();

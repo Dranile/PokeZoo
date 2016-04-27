@@ -138,9 +138,9 @@ Joueur.prototype.update = function(joueur){
 };
 
 //Animal.prototype.listeHexaEligible = function() {
-Joueur.prototype.listeHexaEligible = function() { //mis sur joueur pour test vu que aucun animal initialisé
+function listeHexaEligible(position) { //mis sur joueur pour test vu que aucun animal initialisé
     var liste = [];
-    var posAnimal = parseInt(this.hexagone);
+    var posAnimal = parseInt(position);
     var numHexaHG, numHexaHD, numHexaG, numHexaD, numHexaBG, numHexaBD;
 
     if ((parseInt(posAnimal/148)%2) == 0){ //148 hexagone par ligne //si le numero de ligne est pair (en commencant par 0)
@@ -160,25 +160,98 @@ Joueur.prototype.listeHexaEligible = function() { //mis sur joueur pour test vu 
         numHexaBD = posAnimal+149;
     }
 
-    var tableauProximité = [numHexaHG, numHexaHD, numHexaG, numHexaD, numHexaBG, numHexaBD];
+    var tableauProximite = [numHexaHG, numHexaHD, numHexaG, numHexaD, numHexaBG, numHexaBD];
     var terrain;
-    for(var i in tableauProximité){
-        terrain = document.querySelector("[ordreHexagone='"+tableauProximité[i]+"'").getAttribute("class").split(" ")[1];
-        //console.log("hexagone " + tableauProximité[i] + " terrain : " + terrain);
+    for(var i in tableauProximite){
+        terrain = document.querySelector("[ordreHexagone='"+tableauProximite[i]+"'").getAttribute("class").split(" ")[1];
         if (terrain == "chemin"){
-            //liste.push(document.querySelector("[ordreHexagone='"+tableauProximité[i]+"'"));
-            liste.push(tableauProximité[i]);
+            liste.push(tableauProximite[i]);
         }
     }
-    //var hexa = document.querySelector("[ordreHexagone='"+posAnimal+"'");
-    //var terrain = document.querySelector("[ordreHexagone='"+posAnimal+"'").getAttribute("class").split(" ")[1];
-    //console.log("hexagone du joueur : " + posAnimal);
-    //console.log("nombre d'hexagone eligible : " + liste.length);
-    /*for(var j in liste){
-        console.log(liste[j] + "");
-    }*/
     return liste;
-};
+}
+
+function calculDistance(posAnimal, posCible){
+    var hexaAnimal = document.querySelector("[ordreHexagone='"+posAnimal+"'");
+    var posAnimalX = parseInt(hexaAnimal.getAttribute("x"));
+    var posAnimalY = parseInt(hexaAnimal.getAttribute("y"));
+    var hexaJoueur = document.querySelector("[ordreHexagone='"+posCible+"'");
+    var posCibleX = parseInt(hexaJoueur.getAttribute("x"));
+    var posCibleY = parseInt(hexaJoueur.getAttribute("y"));
+
+    var distance = (posAnimalX-posCibleX)*(posAnimalX-posCibleX) + (posAnimalY-posCibleY)*(posAnimalY-posCibleY);
+    return distance;
+}
+
+function HexgoneEligibleDistance(hexagone){
+    this.hexagone = hexagone;
+    this.distance = 0;
+    this.nbPassage = 0;
+
+}
+
+function joueurPlusProche{ //serveur //a lier a animal.prototype
+    //parcours tableaux joueur non allié
+    //pour chaqu joueur calcul distance entre animal et joueur
+    //prendre le min
+;
+    return true;
+}
+
+function chasse(animal) // a ppeller a chaque unité de temps
+    //liste = pathfinding(lion, lion.joueurPlusProche(), listevide);
+    //pour chaque position de liste
+        //deplacerAnimal()
+        //attendre unmoment (1sec)
+}
+
+
+//ATTENTION SI JOUEUR NEXISTE PLUS
+function pathfinding(animal, joueur, listePasPrecedents){
+    if (parseInt(animal) == joueur.hexagone){
+        return listePasPrecedents;
+    }
+    else {
+        var liste = listeHexaEligible(parseInt(animal)); //liste d'entier
+        var listeDistance = [];
+
+        for (var i in liste){
+            listeDistance.push(new HexgoneEligibleDistance(liste[i]));
+        }
+        for (var g in listeDistance){
+            for(var t in listePasPrecedents){
+                if(listeDistance[g].hexagone == listePasPrecedents[t].hexagone) {
+                    listeDistance[g].nbPassage = listePasPrecedents[t].nbPassage;
+                }
+            }
+        }
+
+        var listeDistanceFinale = [];
+        for (var h in listeDistance){
+            if (listeDistance[h].nbPassage < 3) {
+                listeDistanceFinale.push(listeDistance[h]);
+            }
+        }
+        for (var hf in listeDistanceFinale) {
+            listeDistanceFinale[hf].nbPassage++;
+            listeDistanceFinale[hf].distance = calculDistance(listeDistanceFinale[hf].hexagone, joueur.hexagone);
+        }
+
+        listeDistanceFinale.sort(function(a,b){
+            if(a.distance > b.distance){
+                return 1;
+            }
+            if(a.distance < b.distance){
+                return -1;
+            }
+            return 0;
+        });
+        for (var j in listeDistanceFinale){
+            listePasPrecedents.push(listeDistanceFinale[j]);
+            return pathfinding(listeDistanceFinale[j].hexagone, joueur, listePasPrecedents);
+        }
+    }
+}
 
 //FONCTIONS POUR COMMUNICATION SERVEUR
 function creerJoueurPrincipal(nom, avatar){
