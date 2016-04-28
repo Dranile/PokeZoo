@@ -190,15 +190,14 @@ function HexgoneEligibleDistance(hexagone){
 
 }
 
-function joueurPlusProche{ //serveur //a lier a animal.prototype
+function joueurPlusProche(){ //serveur //a lier a animal.prototype
     //parcours tableaux joueur non allié
     //pour chaqu joueur calcul distance entre animal et joueur
     //prendre le min
-;
     return true;
 }
 
-function chasse(animal) // a ppeller a chaque unité de temps
+function chasse(animal){ // a ppeller a chaque unité de temps
     //liste = pathfinding(lion, lion.joueurPlusProche(), listevide);
     //pour chaque position de liste
         //deplacerAnimal()
