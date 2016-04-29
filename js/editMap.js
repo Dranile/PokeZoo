@@ -133,12 +133,15 @@ $().ready(function(){
             array = [];
             elem = d3.selectAll("div.map g path");
             elem.each(function(d){
-                console.log(d); //Pour obtenir le x, y
+                console.log(); //Pour obtenir le x, y
                 var classe = this.getAttribute("class");
                 classe = classe.substring(8);
                 var obj = {
                     "type":classe,
-                    "color":this.style.fill
+                    "color":this.style.fill,
+                    "x":this.getAttribute("x"),
+                    "y":this.getAttribute("y"),
+                    "ordreHexagone":this.getAttribute("ordreHexagone")
                 };
                 array.push(obj);
             });

@@ -34,6 +34,21 @@ var retour = null;
 var timeoutTime = 10000; //soit 10000 ms
 var plein = false;
 
+var carte;
+var carteClient = [];
+
+function initialiserCarte(){
+	fs.readFile('cfg/map.json', 'utf8', function (err,data) {
+		if (err) {
+			return console.log(err);
+		}
+		carte = JSON.parse(data);
+		for(var i in carte){
+			carteClient.push({"type":carte[i]["type"],
+				        "color":carte[i]["color"]});
+		}
+	});
+}
 
 function updateTimeoutPlayer(index){
 	clearTimeout(tabTimeout[index]);
@@ -136,32 +151,29 @@ app.get("/server/getType", function(req, res){
 
 app.get("/server/getMap", function(req, res){
 	res.setHeader('Content-Type', 'application/json');
-	fs.readFile('cfg/map.json', 'utf8', function (err,data) {
-		if (err) {
-			res.json("null");
-			return console.log(err);
-		}
-		data = JSON.parse(data);
-	  	res.json(data);
-	  	console.log("fichier de map envoyé");
-		});
+	//console.log(carte);
+	res.json(carteClient);
+	console.log("fichier de map envoyé");
 });
 
 app.post("/server/setMap", function(req, res){
 
     var map;
     for(var p in req.body){
-        map = JSON.parse(req.body[p]);
+        map = req.body[p];
     }
-    fs.writeFile("cfg/map.json", JSON.stringify(map), function(err) {
+    fs.writeFile("cfg/map.json", map, function(err) {
 	    if(err) {
 	        return console.log(err);
 	    }
 	    console.log("Fichier de map sauvegardé");
+	    initialiserCarte();
 	}); 
+
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.end("Données bien reçues !");
 });
+initialiserCarte();
 app.listen(port);
 console.log("Serveur tourne sur http://localhost:"+port);
 
