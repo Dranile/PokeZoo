@@ -133,7 +133,6 @@ $().ready(function(){
             array = [];
             elem = d3.selectAll("div.map g path");
             elem.each(function(d){
-                console.log(); //Pour obtenir le x, y
                 var classe = this.getAttribute("class");
                 classe = classe.substring(8);
                 var obj = {
