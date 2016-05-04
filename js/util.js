@@ -44,110 +44,78 @@ function placementCentre(){
 
 
 function gridClick(){
-	// console.log(this);
-	// console.log("class : " + this.getAttribute("class"));
-	// console.log("type : " + this.getAttribute("class").split(" ")[1]);
 	var terrain = this.getAttribute("class").split(" ")[1];
 	var ordreHexa = this.getAttribute("ordreHexagone");
-	/*
-	var hexax = this.getAttribute("x");
-	var hexay = this.getAttribute("y");
-	*/
 	var hexa = document.querySelector("[ordreHexagone='"+ordreHexa+"'");
-	/*
-	 console.log("Hexa : " + hexa);
-	 var testHexaActuel = joueurP.getHexagone();
-	 console.log("HexaActuel :" + testHexaActuel);
-	 */
-	//joueurs[0].UpdateDeplacer(joueurP.getPosX(),joueurP.getPosY(),joueurP.getHexagone());
-	// joueurs[0].deplacer();
 	if (terrain == "mur") {
 		//alert("impossible de se deplacer sur cette case");
 	}
 	else {
-		if (terrain == "viande" || terrain == "poisson"){
-			joueurP.prendreNourriture(terrain);
-			redessiner();
-		}
-		if (terrain == "guepard" || terrain == "loup" || terrain == "lion" || terrain == "ours"){
-			for (i in animaux){
-				if (animaux[i].nom == terrain){
-					joueurP.nourrir(animaux[i]);
-					redessiner();
+		if (VerificationProximite(parseInt(ordreHexa))){
+			DeplacerPersonnage(hexa,0);
+			joueurP.UpdateDeplacer(ordreHexa);
+
+			if (terrain == "viande" || terrain == "poisson"){
+				joueurP.prendreNourriture(terrain);
+				redessiner();
+			}
+			if (terrain == "guepard" || terrain == "loup" || terrain == "lion" || terrain == "ours"){
+				for (i in animaux){
+					if (animaux[i].nom == terrain){
+						joueurP.nourrir(animaux[i]);
+						redessiner();
+					}
+
 				}
 
 			}
 
-		}
-			if (VerificationProximité(parseInt(ordreHexa))){
-				DeplacerPersonnage(hexa,0);
-				joueurP.UpdateDeplacer(ordreHexa);
+			//ajout pour test fonction listeHexaEligible()
+			//listeHexaEligible(joueurP.hexagone);
+			var listevide = [];
+			var liste = pathfinding(joueurs[0].hexagone, joueurs[1], listevide);
+			console.log("chemin -> " );
+			for (var i in liste){
+				console.log(liste[i].hexagone);
 			}
-		
-
-
+		}
 	}
 
 	console.log(ordreHexa);
-
-	/*
-	 if(hexa == ordreHexagoneActuel+1 || hexa == ordreHexagoneActuel -1){
-	 ordreHexagoneActuel = hexa;
-	 console.log("HexagoneActuel après : "+ordreHexagoneActuel);
-	 DeplacerPersonnage(hexax,hexay);
-
-	 }
-
-	 if(hexa == ordreHexagoneActuel-100 || hexa == ordreHexagoneActuel-101){
-
-	 ordreHexagoneActuel = hexa;
-	 console.log("HexagoneActuel après : "+ordreHexagoneActuel);
-	 DeplacerPersonnage(hexax,hexay);
-	 }
-
-	 if(hexa == ordreHexagoneActuel+100 || hexa == ordreHexagoneActuel+99) {
-
-	 ordreHexagoneActuel = hexa;
-	 console.log("HexagoneActuel après : "+ordreHexagoneActuel);
-	 DeplacerPersonnage(hexax,hexay);
-	 }
-	 */
-	//DeterminerDeplacement(hexa);
-
-
-	//console.log("Clické !");
 }
 
-function VerificationProximité(ordreHexa){
-
+/**
+ * @return {boolean}
+ */
+function VerificationProximite(ordreHexa){
 	var hexaActuel = parseInt(joueurP.hexagone);
-	if(ordreHexa == hexaActuel+147 || ordreHexa == hexaActuel+148 || ordreHexa == hexaActuel +149
-		|| ordreHexa == hexaActuel +1 || ordreHexa == hexaActuel -1 || ordreHexa == hexaActuel -147
-		|| ordreHexa == hexaActuel-148 || ordreHexa == hexaActuel -149){
 
-		//alert("OK");
-	return true;
+	if ((parseInt(hexaActuel/148)%2) == 0){ //148 hexagone par ligne //si le numero de ligne est pair (en commencant par 0)
+		if(ordreHexa == hexaActuel+147 || ordreHexa == hexaActuel+148
+			|| ordreHexa == hexaActuel +1 || ordreHexa == hexaActuel -1
+			|| ordreHexa == hexaActuel-148 || ordreHexa == hexaActuel -149){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
-
-	else{
-
-		//alert("PAS OK")
-		return false;
+	else {
+		if(ordreHexa == hexaActuel+148 || ordreHexa == hexaActuel +149
+			|| ordreHexa == hexaActuel +1 || ordreHexa == hexaActuel -1
+			|| ordreHexa == hexaActuel -147	|| ordreHexa == hexaActuel-148){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
-
-		
-
 }
+
 //Fonction permettant d'effectuer le mouvement du personnage principal
 function DeplacerPersonnage(hexa,start){
-
-	/*
-	 d3.select(".image")
-	 .attr("transform", "translate(" + hexax +","+ hexay +")");
-	 */
-
 	 //On récupère les positions du centre du nouvel hexagone du personnage principal
-	 var hexax = hexa.getAttribute("x");
+	var hexax = hexa.getAttribute("x");
 	var hexay = hexa.getAttribute("y");
 
 	//Déplacement du Background
@@ -158,7 +126,7 @@ function DeplacerPersonnage(hexa,start){
 	elem.select("g")
 		.attr("transform", "translate(" + (centrex-hexax) +","+ (centrey-hexay) +")");
 
-	 RepositionnerImages(hexa,start);
+	RepositionnerImages(hexa,start);
 	 
 }
 /*Fonction permettant de repositionner les images de tous les autres joueurs et des animaux après un déplacement
@@ -185,30 +153,28 @@ function RepositionnerImages(hexa,start){
 	for(var i in joueurs){
 
 		//On récupère l'image du joueur que l'on souhaite décaler
-	var joueur = document.querySelector("[id='"+joueurs[i].nom+"'");
-	//On récupère les valeurs du décalage déjà subit par l'image
-	var décalagex = parseInt(joueur.getAttribute("décalagex"));
-	var décalagey = parseInt(joueur.getAttribute("décalagey"));
+		var joueur = document.querySelector("[id='"+joueurs[i].nom+"'");
+		//On récupère les valeurs du décalage déjà subit par l'image
+		var décalagex = parseInt(joueur.getAttribute("décalagex"));
+		var décalagey = parseInt(joueur.getAttribute("décalagey"));
 
-	//On additionne les valeurs du décalage déjà subit par l'image avec le nouveau décalage à effectuer
-	décalagex+= xprec - parseInt(hexax);
-	décalagey+= yprec - parseInt(hexay);
+		//On additionne les valeurs du décalage déjà subit par l'image avec le nouveau décalage à effectuer
+		décalagex+= xprec - parseInt(hexax);
+		décalagey+= yprec - parseInt(hexay);
 	
 
-	//On récupère l'hexagone sur lequel se situe le joueur à décaler
-	var HexaCentre = document.querySelector("[ordreHexagone='"+joueurs[i].hexagone+"'");
-	//On récupère les valeurs du centre de l'hexagone sur lequel se situe le joueur à décaler
-	var Joueurx = parseInt(HexaCentre.getAttribute("x"));
-	var Joueury = parseInt(HexaCentre.getAttribute("y"));
+		//On récupère l'hexagone sur lequel se situe le joueur à décaler
+		var HexaCentre = document.querySelector("[ordreHexagone='"+joueurs[i].hexagone+"'");
+		//On récupère les valeurs du centre de l'hexagone sur lequel se situe le joueur à décaler
+		var Joueurx = parseInt(HexaCentre.getAttribute("x"));
+		var Joueury = parseInt(HexaCentre.getAttribute("y"));
 	
-	//On bouge l'image pour la décaler et on change les valeurs de décalage de l'image
-	 d3.select("#"+joueurs[i].nom)
-	 .attr("transform", "translate(" +  (Joueurx+décalagex) +","+ (Joueury+décalagey) +")")
-	 .attr("décalagex",décalagex)
-	 .attr("décalagey",décalagey);
+		//On bouge l'image pour la décaler et on change les valeurs de décalage de l'image
+	 	d3.select("#"+joueurs[i].nom)
+	 		.attr("transform", "translate(" +  (Joueurx+décalagex) +","+ (Joueury+décalagey) +")")
+	 		.attr("décalagex",décalagex)
+	 		.attr("décalagey",décalagey);
 	}
-	
-
 }
 
 function updateDeplacement(){
@@ -216,22 +182,22 @@ function updateDeplacement(){
 	for(var i in joueurs){
 
 		//On récupère l'image du joueur que l'on souhaite décaler
-	var joueur = document.querySelector("[id='"+joueurs[i].nom+"'");
-	//On récupère les valeurs du décalage déjà subit par l'image
-	var décalagex = parseInt(joueur.getAttribute("décalagex"));
-	var décalagey = parseInt(joueur.getAttribute("décalagey"));
+		var joueur = document.querySelector("[id='"+joueurs[i].nom+"'");
+		//On récupère les valeurs du décalage déjà subit par l'image
+		var décalagex = parseInt(joueur.getAttribute("décalagex"));
+		var décalagey = parseInt(joueur.getAttribute("décalagey"));
 
-	//On récupère l'hexagone sur lequel se situe le joueur à décaler
-	var HexaCentre = document.querySelector("[ordreHexagone='"+joueurs[i].hexagone+"'");
-	//On récupère les valeurs du centre de l'hexagone sur lequel se situe le joueur à décaler
-	var Joueurx = parseInt(HexaCentre.getAttribute("x"));
-	var Joueury = parseInt(HexaCentre.getAttribute("y"));
+		//On récupère l'hexagone sur lequel se situe le joueur à décaler
+		var HexaCentre = document.querySelector("[ordreHexagone='"+joueurs[i].hexagone+"'");
+		//On récupère les valeurs du centre de l'hexagone sur lequel se situe le joueur à décaler
+		var Joueurx = parseInt(HexaCentre.getAttribute("x"));
+		var Joueury = parseInt(HexaCentre.getAttribute("y"));
 	
-	//On bouge l'image pour la décaler et on change les valeurs de décalage de l'image
-	 d3.select("#"+joueurs[i].nom)
-	 .attr("transform", "translate(" +  (Joueurx+décalagex) +","+ (Joueury+décalagey) +")")
-	 .attr("décalagex",décalagex)
-	 .attr("décalagey",décalagey);
+		//On bouge l'image pour la décaler et on change les valeurs de décalage de l'image
+	 	d3.select("#"+joueurs[i].nom)
+	 		.attr("transform", "translate(" +  (Joueurx+décalagex) +","+ (Joueury+décalagey) +")")
+	 		.attr("décalagex",décalagex)
+	 		.attr("décalagey",décalagey);
 	}
 }
 
@@ -250,11 +216,7 @@ function creeHexagone(rayon) {
 function loadMap(width, height, rayon, element){
 	var nbLignes = height/(1.5*rayon) + 2;
 	var nbColonnes = width / (1.74*rayon);
-	// var coef = width / height;
-	// var nbColonnes = nbLignes * coef;
-
 	var distance = rayon - rayon*Math.cos(30*Math.PI/180);
-	//console.log("distance = "+distance);
 
 	d3.select(".map").append("svg")
 		.attr("xmlns", "http://www.w3.org/2000/svg")
@@ -303,12 +265,6 @@ function loadMap(width, height, rayon, element){
 		}
 	}
 
-	// .attr("fill", "white")
-	//       .attr("id", ligne+" "+colonne)
-	//       .on("click", function(d) {
-	//           console.log(d3.select(this).attr('id'));
-	//     	});
-
 	$.ajax({
 		url: "http://localhost:5000/server/getMap",
 		async: true
@@ -336,8 +292,6 @@ function loadMap(width, height, rayon, element){
 }
 
 function PositionnerImages(){
-
-
 	//Placement du joueur principal
 	d3.select(".map").selectAll("svg")
 		.append("svg:image")
@@ -379,168 +333,4 @@ function PositionnerImages(){
 		.attr("transform", "translate(" + Joueurx +","+ Joueury +")");
 
 	}
-
-/*
-	d3.select(".map").selectAll("svg")
-		.append("svg:image")
-		.attr("xlink:href", "img/"+joueurs[0].image)
-		.attr("width", 50)
-		.attr("height", 50)
-		.attr("id",joueurs[0].nom)
-		.attr("class","Joueur")
-		.attr("décalagex",0)
-		.attr("décalagey",0);
-
-	var HexaCentre = document.querySelector("[ordreHexagone='"+joueurs[0].hexagone+"'");
-	var Joueurx = HexaCentre.getAttribute("x");
-	var Joueury = HexaCentre.getAttribute("y");
-
-	d3.select("#"+joueurs[0].nom)
-		.attr("transform", "translate(" + Joueurx +","+ Joueury +")");
-
-
-
-		
-	d3.select(".map").selectAll("svg")
-		.append("svg:image")
-		.attr("xlink:href", "img/"+joueurs[1].image)
-		.attr("width", 50)
-		.attr("height", 50)
-		.attr("id",joueurs[1].nom)
-		.attr("class","Joueur")
-		.attr("décalagex",0)
-		.attr("décalagey",0);
-
-		var HexaCentre = document.querySelector("[ordreHexagone='"+joueurs[1].hexagone+"'");
-		var Joueurx = HexaCentre.getAttribute("x");
-		var Joueury = HexaCentre.getAttribute("y");
-
-		d3.select("#"+joueurs[1].nom)
-		.attr("transform", "translate(" + Joueurx +","+ Joueury +")");
-		*/
 }
-
-// function loadMap(width, height, MapRows, element){
-
-
-// 	// ========================================
-// 	//          initialisation de la grille
-// 	// ========================================
-
-// 	//The number of columns and rows of the heatmap
-
-// 	var coef = width / height;
-// 	var MapColumns = MapRows * coef;
-
-// 	//The maximum radius the hexagons can have to still fit the screen
-// 	var hexRadius = d3.min([width/((MapColumns + 0.5) * Math.sqrt(3)),
-// 		height/((MapRows + 1/3) * 1.5)]);
-
-// 	//Set the new height and width of the SVG based on the max possible
-// 	width = MapColumns*hexRadius*Math.sqrt(3);
-// 	heigth = MapRows*1.5*hexRadius+0.5*hexRadius;
-
-// 	//Set the hexagon radius
-// 	var hexbin = d3.hexbin()
-// 		.radius(hexRadius);
-
-// 	$.ajax({
-// 		url: "http://localhost:5000/server/getMap",
-// 		async: true
-// 	}).done(function(donnee) {
-// 			if(donnee != "null"){
-// 				map=donnee;
-
-// 				//Calculate the center positions of each hexagon
-// 				var points = [];
-// 				for (var i = 0; i < MapRows; i++) {
-// 					for (var j = 0; j < MapColumns; j++) {
-// 						points.push([hexRadius * j * 1.75, hexRadius * i * 1.5]);
-// 					}
-// 				}
-
-
-// 				//Create SVG element
-
-// 				var svg;
-
-// 				svg = d3.select(".map").append("svg")
-// 					.attr("xmlns", "http://www.w3.org/2000/svg")
-// 					.attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
-// 					.attr("width", width)
-// 					.attr("height", height)
-// 					.append("g");
-
-//                                 //Attache l'image du guepard à la map
-//                                  d3.select(".map").selectAll("svg")
-//                                 .append("svg:image")
-//                                 .attr("xlink:href", "img/fille1.png")
-//                                 .attr("width", 50)
-//                                 .attr("height", 50)
-//                                 .attr("id","image")
-//                                 .attr("class","fille1");
-//                                 d3.select(".map").selectAll("svg")
-//                                 .append("svg:image")
-//                                 .attr("xlink:href", "img/garcon1.png")
-//                                 .attr("width", 50)
-//                                 .attr("height", 50)
-//                                 .attr("id","image")
-//                                 .attr("class","garcon1");
-//                                 placementCentre();
-// 				/*
-// 				 // Marche pas :(
-// 				 svg.append("image")
-// 				 .attr("x", 0)
-// 				 .attr("y", 0)
-// 				 .attr("xlink:href", "../img/map_zoo.png")
-// 				 .attr("width","1000px")
-// 				 .attr("height","650px");
-// 				 */
-
-
-// 				//Génère les hexagon de base
-// 				svg.selectAll(".hexagon")
-// 					.data(hexbin(points))
-// 					.enter().append("path")
-// 					.attr("class", "hexagon")
-// 					.attr("d", function (d) {
-// 						return "M" + d.x + "," + d.y + hexbin.hexagon();
-// 					})
-// 					.attr("x",function(d){
-//                         return d.x - hexRadius +10;
-//                                         })
-//                     .attr("y",function(d){
-//                         return d.y - hexRadius +10;
-//                     })
-// 					.attr("stroke", function (d,i) {
-// 						return "#000";
-// 					})
-// 					.attr("stroke-width", "1px")
-//                     .attr("ordreHexagone",ordreHexagone)
-// 					.classed(element, true)
-// 					.on("mouseover", mover)
-// 					.on("mouseout", mout)
-// 					.style("fill-opacity", 0)
-// 					.on("click", gridClick);
-
-// 				//Génère la map chargée
-// 				d3.selectAll(".hexagon")
-// 					.data(map)
-// 					.each(function(data){
-// 						if(data.type != element){
-// 							this.setAttribute("class","hexagon " + data.type);
-// 							$(this).css("fill-opacity", 0.5);
-// 							$(this).css("fill",data.color);
-// 						}
-// 					});
-
-// 			}
-// 			else{
-// 				alert("Il y a eu une erreur");
-// 			}
-// 		})
-// 		.fail(function(){
-// 			alert("Il y a eu une erreur avec le serveur, il est peut être déconnecté");
-// 		});
-// };
-

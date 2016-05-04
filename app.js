@@ -6,6 +6,7 @@ var cors = require("cors");
 var app = express();
 var bodyParser = require('body-parser');
 var game = require("./server/game.js");
+var animal = require("./server/animal.js");
 
 app.use(bodyParser.urlencoded({
         extended: false,
@@ -34,6 +35,53 @@ var retour = null;
 var timeoutTime = 10000; //soit 10000 ms
 var plein = false;
 
+var carte = [];
+var carteClient = [];
+
+
+function initialiseAnimaux(){
+	var lion = new animal('lion', "viande");
+	var loup = new animal('loup', "viande");
+	var guepard = new animal('guepard', "viande");
+	var ours = new animal('ours', "poisson");
+	var animaux = {
+		"lion" : lion,
+		"loup": loup,
+		"guepard": guepard, 
+		"ours" : ours
+	};
+	console.log(animaux);
+}
+
+function changeObjet(objet){
+    /* 
+     * Permet de changer un objet possédant des méthodes dans prototype en objet sans méthode (utile pour les reqêtes AJAX)
+    */
+    var obj = {};
+    for(var i in objet){
+        if(objet.hasOwnProperty(i)){
+            obj[i] = objet[i];
+        }
+    }
+    return obj;
+}
+
+function initialiserCarte(){
+
+	if(carteClient.length == 0 && carte.length == 0){
+		fs.readFile('cfg/map.json', 'utf8', function (err,data) {
+			if (err) {
+				return console.log(err);
+			}
+			carte = JSON.parse(data);
+			for(var i in carte){
+				carteClient.push({"type":carte[i]["type"],
+					        "color":carte[i]["color"]});
+			}
+		});
+		console.log("carte initialisée");
+	}
+}
 
 function updateTimeoutPlayer(index){
 	clearTimeout(tabTimeout[index]);
@@ -90,6 +138,8 @@ app.post("/game/joinGame", function(req,res){
 				retour = players;
 				console.log(players);
 				console.log("lancement de la partie !!");
+				initialiseAnimaux();
+
 			});
 		}
 		res.end("bienvenue");
@@ -136,32 +186,31 @@ app.get("/server/getType", function(req, res){
 
 app.get("/server/getMap", function(req, res){
 	res.setHeader('Content-Type', 'application/json');
-	fs.readFile('cfg/map.json', 'utf8', function (err,data) {
-		if (err) {
-			res.json("null");
-			return console.log(err);
-		}
-		data = JSON.parse(data);
-	  	res.json(data);
-	  	console.log("fichier de map envoyé");
-		});
+	//console.log(carte);
+	res.json(carteClient);
+	console.log("fichier de map envoyé");
 });
 
 app.post("/server/setMap", function(req, res){
 
     var map;
     for(var p in req.body){
-        map = JSON.parse(req.body[p]);
+        map = req.body[p];
     }
-    fs.writeFile("cfg/map.json", JSON.stringify(map), function(err) {
+    fs.writeFile("cfg/map.json", map, function(err) {
 	    if(err) {
 	        return console.log(err);
 	    }
 	    console.log("Fichier de map sauvegardé");
+	    carte = [];
+	   	carteClient = [];
+	    initialiserCarte();
 	}); 
+
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.end("Données bien reçues !");
 });
+initialiserCarte();
 app.listen(port);
 console.log("Serveur tourne sur http://localhost:"+port);
 
