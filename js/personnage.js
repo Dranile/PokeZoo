@@ -194,6 +194,7 @@ function joueurPlusProche(){ //serveur //a lier a animal.prototype
     //parcours tableaux joueur non allié
     //pour chaqu joueur calcul distance entre animal et joueur
     //prendre le min
+    
     return true;
 }
 
@@ -202,8 +203,16 @@ function chasse(animal){ // a ppeller a chaque unité de temps
     //pour chaque position de liste
         //deplacerAnimal()
         //attendre unmoment (1sec)
+
+    var listevide = [];
+            var liste = pathfinding(animal.hexagone, joueurP, listevide);
+               
+    clearTimeout(tidDep);
+    tidDep = setTimeout(DeplacementChemin,1000,liste,animal);
+    tidCha = setTimeout(chasse,2005,animal);
 }
 
+    
 
 //ATTENTION SI JOUEUR NEXISTE PLUS
 function pathfinding(animal, joueur, listePasPrecedents){

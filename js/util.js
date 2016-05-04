@@ -1,7 +1,7 @@
 //Variable pour numéroter les hexagones
 var ordreHexagon = -1;
-
-
+var tidDep;
+var tidCha
 //Fonction quand on passe la souris sur une case
 
 
@@ -72,21 +72,33 @@ function gridClick(){
 
 			//ajout pour test fonction listeHexaEligible()
 			//listeHexaEligible(joueurP.hexagone);
+
 			var listevide = [];
-			var liste = pathfinding(joueurs[0].hexagone, joueurs[1], listevide);
+			var liste = pathfinding(joueurs[0].hexagone, joueurP, listevide);
 			console.log("chemin -> " );
 			for (var i in liste){
 				console.log(liste[i].hexagone);
 			}
 		}
 	}
-
-	console.log(ordreHexa);
+	
+	
 }
 
 /**
  * @return {boolean}
  */
+function DeplacementChemin(liste,animal){
+
+	var ordreHexa = liste.shift();
+	
+	animal.hexagone = ordreHexa.hexagone;
+	console.log("Ordre hexa deplacement chemin :" +ordreHexa.hexagone);
+	updateDeplacement();
+	if(liste.length != 0) tid = setTimeout(DeplacementChemin,1000,liste,animal);
+	else clearTimeout(tid);
+}
+
 function VerificationProximite(ordreHexa){
 	var hexaActuel = parseInt(joueurP.hexagone);
 
