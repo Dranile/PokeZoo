@@ -73,9 +73,20 @@ function gridClick(){
 			//ajout pour test fonction listeHexaEligible()
 			//listeHexaEligible(joueurP.hexagone);
 
-			var listevide = [];
+			/*var listevide = [];
 			var liste = pathfinding(joueurs[0].hexagone, joueurP, listevide);
 			console.log("chemin -> " );
+			for (var i in liste){
+				console.log(liste[i].hexagone);
+			}*/
+
+			var listevide = [];
+			joueurs[0].hexagone = 2668;
+			joueurs[1].hexagone = 2963;
+			dessiner(joueurP);
+			PositionnerImages();
+			var liste = pathfinding(joueurs[0].hexagone, joueurs[1], listevide);
+			console.log("chemin test pathfinding -> " );
 			for (var i in liste){
 				console.log(liste[i].hexagone);
 			}

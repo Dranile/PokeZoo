@@ -236,7 +236,8 @@ function pathfinding(animal, joueur, listePasPrecedents){
 
         var listeDistanceFinale = [];
         for (var h in listeDistance){
-            if (listeDistance[h].nbPassage < 3) {
+            //if (listeDistance[h].nbPassage < 3) {
+            if (listeDistance[h].nbPassage < 2) {
                 listeDistanceFinale.push(listeDistance[h]);
             }
         }

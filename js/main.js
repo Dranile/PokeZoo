@@ -29,8 +29,8 @@ $().ready(function(){
         ajouterAutreJoueur('roxas', 'garcon2');
         ajouterAutreJoueur('shepard', 'garcon1');
         joueurP.hexagone = 1045;
-        joueurs[0].hexagone = 302;
         //joueurs[0].hexagone = 1046;
+        joueurs[0].hexagone = 302;
         joueurs[1].hexagone = 903;
         dessiner(joueurP);
         PositionnerImages();
