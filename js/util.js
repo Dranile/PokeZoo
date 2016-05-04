@@ -88,15 +88,17 @@ function gridClick(){
 /**
  * @return {boolean}
  */
-function DeplacementChemin(liste,animal){
+function DeplacementChemin(liste,animal){ //attention a la recursion, ca bouclait a l'infini
+	if (liste.length>0){ //la verif cest ici sinon la console gueule sans s'arreter ^^
+		var ordreHexa = liste.shift();
 
-	var ordreHexa = liste.shift();
-	
-	animal.hexagone = ordreHexa.hexagone;
-	console.log("Ordre hexa deplacement chemin :" +ordreHexa.hexagone);
-	updateDeplacement();
-	if(liste.length != 0) tid = setTimeout(DeplacementChemin,1000,liste,animal);
-	else clearTimeout(tid);
+		animal.hexagone = ordreHexa.hexagone;
+		console.log("Ordre hexa deplacement chemin :" +ordreHexa.hexagone);
+		updateDeplacement();
+		if(liste.length != 0) tid = setTimeout(DeplacementChemin,1000,liste,animal);
+		else clearTimeout(tid);
+	}
+
 }
 
 function VerificationProximite(ordreHexa){
