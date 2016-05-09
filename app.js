@@ -168,12 +168,13 @@ app.post("/game/joinGame", function(req,res){
 
 		if(players.length == playersMax){
 			plein = true;
-			game.initPartie(players, function(obj){
-				players = obj;
+			initialiseAnimaux();
+			game.initPartie(players,animaux, function(j,a){
+				players = j;
+				animaux = a;
 				retour = players;
 				console.log(players);
-				console.log("lancement de la partie !!");
-				initialiseAnimaux();	
+				console.log("lancement de la partie !!");	
 			});
 		}
 		res.end("bienvenue");
@@ -202,7 +203,7 @@ app.post("/game/updateGame", function(req, res){
 		renvoi = [];
 		renvoi.push(players);
 		renvoi.push(animaux);
-		console.log(animaux[2]);
+		console.log(animaux);
 	}
 	res.json(renvoi);
 });
