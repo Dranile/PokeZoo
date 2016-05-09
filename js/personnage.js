@@ -1,6 +1,7 @@
 var joueurs = [];
 var joueurPrincipal;
-
+var tidDep;
+var tidCha
 function Personnage(nom){
     this.nom = nom;
     this.positionX = 0;
@@ -195,7 +196,11 @@ function joueurPlusProche(){ //serveur //a lier a animal.prototype
     //parcours tableaux joueur non allié
     //pour chaqu joueur calcul distance entre animal et joueur
     //prendre le min
-    
+    for(var i in players){
+
+        
+    }
+
     return true;
 }
 
