@@ -7,12 +7,17 @@ $().ready(function(){
   draw();
     // /!\ faire en sorte qu'on ne puisse cliquer qu'une fois !!!! 
 	$("div.login input[type=button]").on("click", function(){
-        pseudo = $("input#name").val();
         if ($("input:checked[name=avatar]").val() == null){
           alert("Veuillez choisir un avatar.");
           return;
         }
+        if($("input#name").val() == ""){
+          alert("Veuillez entrer un nom valide");
+          return;
+        }
         else {
+          pseudo = $("input#name").val();
+          //$("input[type=button]").attr("disabled","true");
           avatar = $("input:checked[name=avatar]").val();
           joueurP = creerJoueurPrincipal(pseudo, avatar);
           dessiner(joueurP);
