@@ -204,7 +204,6 @@ app.post("/game/updateGame", function(req, res){
 		renvoi = [];
 		renvoi.push(players);
 		renvoi.push(animaux);
-		console.log(animaux);
 	}
 	res.json(renvoi);
 });

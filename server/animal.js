@@ -23,7 +23,7 @@ function Animal(nom, nourriture){
     Personnage.call(this, nom);
     this.alimentation = nourriture;
     this.loyaute = 0;
-    this.loyauteMax = 5;
+    this.loyauteMax = 1;
     this.joueurAllie = null;
     this.niveau = [];
     this.libre = 0;
@@ -217,11 +217,7 @@ function joueurPlusProche(players, animal,carte){ //serveur //a lier a animal.pr
     for(var i in players){
 
         if(animal.joueurAllie==null || animal.joueurAllie["nom"] != players[i].nom){
-
-            console.log("player : "+ i);
-            console.log(players[i]);
             test = calculDistance(animal.hexagone, players[i].hexagone,carte);
-            console.log("test : "+test);
             if(test < min || min ==-1 ){
 
                 min = test;
@@ -241,7 +237,8 @@ function chasse(animal,joueur,players,animaux,nbAnimal,carte){ // a ppeller a ch
         //attendre unmoment (1sec)
 
     var listevide = [];
-            var liste = pathfinding(animal.hexagone, players[joueur], listevide,carte);
+    var liste = [];
+    liste = pathfinding(animal.hexagone, players[joueur], listevide,carte);
                
     animaux = DeplacementChemin(liste,animal,animaux,nbAnimal);
 
@@ -256,7 +253,18 @@ function DeplacementChemin(liste,animal,animaux,nbAnimal){ //attention a la recu
     if(liste != undefined ){
         if ( liste.length>0){ //la verif cest ici sinon la console gueule sans s'arreter ^^
             var ordreHexa = liste.shift();
+            if (liste.length>0){
+                ordreHexa = liste.shift();
+            }
+            console.log("ordre hexa "+ordreHexa);
+            console.log("animal.hexagone "+animal.hexagone);
 
+            if (parseInt(ordreHexa) == parseInt(animal.hexagone)){
+                console.log("egaux");
+                if (liste.length>0){
+                    ordreHexa = liste.shift();
+                }   
+            }
             animaux[nbAnimal].hexagone = ordreHexa.hexagone;
             console.log("Ordre hexa deplacement chemin :" +ordreHexa.hexagone);
                 
@@ -268,8 +276,10 @@ function DeplacementChemin(liste,animal,animaux,nbAnimal){ //attention a la recu
 
 //ATTENTION SI JOUEUR NEXISTE PLUS
 function pathfinding(animal, joueur, listePasPrecedents,carte){
+    console.log("pathfinding");
 
     if (parseInt(animal) == joueur.hexagone){
+        console.log("liste chemin : "+listePasPrecedents.length);
         return listePasPrecedents;
     }
     else {
@@ -290,7 +300,7 @@ function pathfinding(animal, joueur, listePasPrecedents,carte){
         var listeDistanceFinale = [];
         for (var h in listeDistance){
             //if (listeDistance[h].nbPassage < 3) {
-            if (listeDistance[h].nbPassage < 2) {
+            if (listeDistance[h].nbPassage < 1) {
                 listeDistanceFinale.push(listeDistance[h]);
             }
         }
@@ -313,6 +323,7 @@ function pathfinding(animal, joueur, listePasPrecedents,carte){
             return pathfinding(listeDistanceFinale[j].hexagone, joueur, listePasPrecedents,carte);
         }
     }
+
 }
 
 
@@ -328,7 +339,6 @@ module.exports = {
         var joueur;
         for(var i in animaux){
             if(animaux[i].libre == 1){
-                console.log(animaux[i]);
                 joueur = joueurPlusProche(players,animaux[i],carte);
                 animaux = chasse(animaux[i],joueur,players,animaux,i,carte);
             }
