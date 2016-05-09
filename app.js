@@ -6,7 +6,7 @@ var cors = require("cors");
 var app = express();
 var bodyParser = require('body-parser');
 var game = require("./server/game.js");
-var animal = require("./server/animal.js");
+var personnage = require("./server/animal.js");
 
 app.use(bodyParser.urlencoded({
         extended: false,
@@ -32,24 +32,21 @@ var players = [];
 var etatJoueurs = [];
 var tabTimeout = [];
 var retour = null;
+var renvoi = []
 var timeoutTime = 10000; //soit 10000 ms
 var plein = false;
+var animaux;
 
 var carte = [];
 var carteClient = [];
 
 
 function initialiseAnimaux(){
-	var lion = new animal('lion', "viande");
-	var loup = new animal('loup', "viande");
-	var guepard = new animal('guepard', "viande");
-	var ours = new animal('ours', "poisson");
-	var animaux = {
-		"lion" : lion,
-		"loup": loup,
-		"guepard": guepard, 
-		"ours" : ours
-	};
+	var lion = personnage.Animal('lion', "viande");
+	var loup = personnage.Animal('loup', "viande");
+	var guepard = personnage.Animal('guepard', "viande");
+	var ours = personnage.Animal('ours', "poisson");
+	animaux = [lion,loup,guepard, ours];
 	console.log(animaux);
 }
 
@@ -111,13 +108,48 @@ function jeuAJour(){
 function updatePlayers(joueur){
 	for(var i in players){
 		if(players[i]["nom"] == joueur["nom"]){
-			players[i] = joueur;
+			players[i].update(joueur);
 			updateTimeoutPlayer(i);
 			etatJoueurs[i] = 1;
 			console.log("Mise à jour joueur : " + joueur["nom"]);
 		}
 	}
 }
+
+app.post("/game/nourrir", function(req,res){
+	res.setHeader('Access-Control-Allow-Origin', '*');
+
+	//------------------------ Methode 2 --------------------------------------------------------------------
+	console.log(req.body);
+
+	for(var i in animaux){
+		if(req.body["nomAnimal"] == animaux[i]["nom"]){
+			var indiceAnimal = i;
+		}
+	}
+
+	for(var i in players){
+		if(req.body["nomJoueur"] == players[i]["nom"]){
+			var indiceJoueur = i;
+		}
+	}
+
+	players = players[indiceJoueur].nourrir(animaux[indiceAnimal], players);
+
+	//------------------------ Methode 1 : problème, le tableau de niveau marche mal... --------------------
+	/*for(var i in req.body){
+		var bete = req.body[i];	
+	}
+	console.log(bete);
+	bete = JSON.parse(bete);
+	//var bete = JSON.parse(req.body);//le parsing se passe mal :( et si on parse pas, on perd le tableau de niveau
+	for(var i in animaux){
+		if(animaux[i]["nom"] == bete["nom"]){
+			animaux[i].update(bete);
+		}
+	}*/
+	res.end("OK");
+});
 
 
 app.post("/game/joinGame", function(req,res){
@@ -128,7 +160,10 @@ app.post("/game/joinGame", function(req,res){
 	}
 	else{
 		var json = req.body;
-		players.push(json);
+		console.log(json);
+		var joueur = personnage.Joueur(json["nom"],json["image"]);
+		joueur.update(json);
+		players.push(joueur);
 		console.log("Un joueur vient de se connecter :" + json["nom"]);
 
 		if(players.length == playersMax){
@@ -138,8 +173,7 @@ app.post("/game/joinGame", function(req,res){
 				retour = players;
 				console.log(players);
 				console.log("lancement de la partie !!");
-				initialiseAnimaux();
-
+				initialiseAnimaux();	
 			});
 		}
 		res.end("bienvenue");
@@ -165,9 +199,12 @@ app.post("/game/updateGame", function(req, res){
 	if(jeuAJour()){
 		console.log("Tous le monde a envoyé, mis à jour de la partie");
 		updateGame();
-		retour = players;
+		renvoi = [];
+		renvoi.push(players);
+		renvoi.push(animaux);
+		console.log(animaux[2]);
 	}
-	res.json(retour);
+	res.json(renvoi);
 });
 
 

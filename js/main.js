@@ -1,7 +1,7 @@
 //Fichier Main (dans ce fichier on appelle différentes fonctions permettant de lancer le jeu)
 var joueurP;
 var pseudo;
-var debug = 1;
+var debug = 0;
 
 $().ready(function(){
   draw();

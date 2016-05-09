@@ -11,6 +11,38 @@ function changeObjet(objet){
     return obj;
 }
 
+function nourrirServeur(joueur, animal){
+
+    // ----------------------------------- Methode 2 ----------------------------------
+    $.ajax({
+        method: "POST",
+        url: "http://localhost:5000/game/nourrir",
+        //'Content-Type': 'application/json',
+        data: {"nomJoueur":joueur["nom"],"nomAnimal":animal["nom"]}
+        }).done(function( msg ) {
+            console.log( "Contrôle : " + msg );
+        })
+        .fail(function(){
+            alert("Le serveur semble être arrêté ou a eu un problème ...");
+    });
+
+    //--------------------------------- Methode 1: voir dans app.js --------------------
+    /*var a = changeObjet(animal);
+    console.log(a);
+    $.ajax({
+        method: "POST",
+        url: "http://localhost:5000/game/nourrir",
+        //'Content-Type': 'application/json',
+        data: {"data": JSON.stringify(a)}
+        }).done(function( msg ) {
+            console.log( "Contrôle : " + msg );
+        })
+        .fail(function(){
+            alert("Le serveur semble être arrêté ou a eu un problème ...");
+    });*/
+}
+
+
 function rejoindre(joueurP, elem){
     var envoiObj = changeObjet(joueurP);
         $.ajax({
@@ -89,15 +121,25 @@ function lancerPartie(elem){
             if(msg != null){
                 //Update des positions joueurs etc ...
                 // l'objet obtenu est un tableau de personnage (attention il n'y a paq de fonction prototype dedans ...)
-                for(var i in msg){
-                    if(msg[i]["nom"] == joueurP["nom"]){
-                        joueurP.update(msg[i]);
+                for(var i in msg[0]){
+                    if(msg[0][i]["nom"] == joueurP["nom"]){
+                        //Je pense que c'est cette ligne qui est responsable du bug de déplacement, le joueur déplace, mais le serveur met à jour
+                        //joueurP.update(msg[0][i]);
+
                     }
                     else{
                         for(var j in joueurs){
-                            if(joueurs[j]["nom"] == msg[i]["nom"]){
-                                joueurs[j].update(msg[i]);
+                            if(joueurs[j]["nom"] == msg[0][i]["nom"]){
+                                joueurs[j].update(msg[0][i]);
                             }
+                        }
+                    }
+                }
+                console.log(msg[1][2]);
+                for(var i in msg[1]){
+                    for(var j in animaux){
+                        if(animaux[j]["nom"] == msg[1][i]["nom"]){
+                            animaux[j].update(msg[1][i]);
                         }
                     }
                 }

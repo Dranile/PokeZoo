@@ -17,7 +17,7 @@ exports.initPartie = function(players, callback){
 			}
 			console.log("tableau de spawns :" + spawns);
 			for(var i in players){
-				var rand = Math.floor((Math.random() * spawns.length)); 
+				var rand = Math.floor((Math.random() * spawns.length));
 				players[i]["hexagone"] = spawns[rand];
 				spawns.splice(rand,1);
 			}

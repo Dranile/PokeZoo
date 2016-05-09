@@ -51,7 +51,7 @@ function dessiner(joueurPrincipal){
         if (animal.loyaute < animal.loyauteMax){
             progressBarColore(context, tailleAnimaux+20, (index)*(0.14*hauteur)+tailleAnimaux/2, i, total_height, radius, total_width, "rgb(21,48,53)");
         }
-        else if (animal.joueurAllie == joueurPrincipal) {
+        else if (animal.joueurAllie["nom"] == joueurPrincipal["nom"]) {
             progressBarColore(context, tailleAnimaux+20, (index)*(0.14*hauteur)+tailleAnimaux/2, i, total_height, radius, total_width, "rgb(65,150,54)");
         }
         else {

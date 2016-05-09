@@ -125,8 +125,9 @@ Joueur.prototype.prendreNourriture = function(nourriture){
 };
 Joueur.prototype.nourrir = function(animal){
     if (this.nourriture == animal.alimentation){
-        animal.nourriPar(this);
+        //animal.nourriPar(this);
         this.nourriture = "";
+        nourrirServeur(this, animal);
     }
     else {
         alert("impossible de nourrir "+animal.nom);

@@ -80,6 +80,9 @@ function gridClick(){
 				console.log(liste[i].hexagone);
 			}*/
 
+			//A remettre pour reactiver le pathfinding
+
+			/*
 			var listevide = [];
 			joueurs[0].hexagone = 2668;
 			joueurs[1].hexagone = 2963;
@@ -90,6 +93,7 @@ function gridClick(){
 			for (var i in liste){
 				console.log(liste[i].hexagone);
 			}
+			*/
 		}
 	}
 	
