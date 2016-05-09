@@ -1,7 +1,5 @@
 //Variable pour numéroter les hexagones
 var ordreHexagon = -1;
-var tidDep;
-var tidCha
 //Fonction quand on passe la souris sur une case
 
 
@@ -204,6 +202,32 @@ function RepositionnerImages(hexa,start){
 	 		.attr("décalagex",décalagex)
 	 		.attr("décalagey",décalagey);
 	}
+
+	for(var i in animaux){
+
+		//On récupère l'image du joueur que l'on souhaite décaler
+		var animal = document.querySelector("[id='"+animaux[i].nom+"'");
+		//On récupère les valeurs du décalage déjà subit par l'image
+		var décalagex = parseInt(animal.getAttribute("décalagex"));
+		var décalagey = parseInt(animal.getAttribute("décalagey"));
+
+		//On additionne les valeurs du décalage déjà subit par l'image avec le nouveau décalage à effectuer
+		décalagex+= xprec - parseInt(hexax);
+		décalagey+= yprec - parseInt(hexay);
+	
+
+		//On récupère l'hexagone sur lequel se situe le joueur à décaler
+		var HexaCentre = document.querySelector("[ordreHexagone='"+animaux[i].hexagone+"'");
+		//On récupère les valeurs du centre de l'hexagone sur lequel se situe le joueur à décaler
+		var Animalx = parseInt(HexaCentre.getAttribute("x"));
+		var Animaly = parseInt(HexaCentre.getAttribute("y"));
+	
+		//On bouge l'image pour la décaler et on change les valeurs de décalage de l'image
+	 	d3.select("#"+animaux[i].nom)
+	 		.attr("transform", "translate(" +  (Animalx+décalagex) +","+ (Animaly+décalagey) +")")
+	 		.attr("décalagex",décalagex)
+	 		.attr("décalagey",décalagey);
+	}
 }
 
 function updateDeplacement(){
@@ -225,6 +249,27 @@ function updateDeplacement(){
 		//On bouge l'image pour la décaler et on change les valeurs de décalage de l'image
 	 	d3.select("#"+joueurs[i].nom)
 	 		.attr("transform", "translate(" +  (Joueurx+décalagex) +","+ (Joueury+décalagey) +")")
+	 		.attr("décalagex",décalagex)
+	 		.attr("décalagey",décalagey);
+	}
+
+	for(var i in animaux){
+
+		//On récupère l'image du joueur que l'on souhaite décaler
+		var animal = document.querySelector("[id='"+animaux[i].nom+"'");
+		//On récupère les valeurs du décalage déjà subit par l'image
+		var décalagex = parseInt(animal.getAttribute("décalagex"));
+		var décalagey = parseInt(animal.getAttribute("décalagey"));
+
+		//On récupère l'hexagone sur lequel se situe le joueur à décaler
+		var HexaCentre = document.querySelector("[ordreHexagone='"+animaux[i].hexagone+"'");
+		//On récupère les valeurs du centre de l'hexagone sur lequel se situe le joueur à décaler
+		var Animalx = parseInt(HexaCentre.getAttribute("x"));
+		var Animaly = parseInt(HexaCentre.getAttribute("y"));
+	
+		//On bouge l'image pour la décaler et on change les valeurs de décalage de l'image
+	 	d3.select("#"+animaux[i].nom)
+	 		.attr("transform", "translate(" +  (Animalx+décalagex) +","+ (Animaly+décalagey) +")")
 	 		.attr("décalagex",décalagex)
 	 		.attr("décalagey",décalagey);
 	}
@@ -360,6 +405,27 @@ function PositionnerImages(){
 
 		d3.select("#"+joueurs[i].nom)
 		.attr("transform", "translate(" + Joueurx +","+ Joueury +")");
+
+	}
+
+	for(var i in animaux){
+
+		d3.select(".map").selectAll("svg")
+		.append("svg:image")
+		.attr("xlink:href", "img/"+animaux[i].nom+".png")
+		.attr("width", 50)
+		.attr("height", 50)
+		.attr("id",animaux[i].nom)
+		.attr("class","Animal")
+		.attr("décalagex",0)
+		.attr("décalagey",0);
+
+		var HexaCentre = document.querySelector("[ordreHexagone='"+animaux[i].hexagone+"'");
+		var Animalx = HexaCentre.getAttribute("x");
+		var Animaly = HexaCentre.getAttribute("y");
+
+		d3.select("#"+animaux[i].nom)
+		.attr("transform", "translate(" + Animalx +","+ Animaly +")");
 
 	}
 }
