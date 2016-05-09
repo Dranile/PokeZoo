@@ -135,7 +135,6 @@ function lancerPartie(elem){
                         }
                     }
                 }
-                console.log(msg[1][2]);
                 for(var i in msg[1]){
                     for(var j in animaux){
                         if(animaux[j]["nom"] == msg[1][i]["nom"]){
