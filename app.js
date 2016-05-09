@@ -200,6 +200,7 @@ app.post("/game/updateGame", function(req, res){
 	if(jeuAJour()){
 		console.log("Tous le monde a envoyé, mis à jour de la partie");
 		updateGame();
+		animaux = personnage.chasseAnimaux(players,animaux,carte);
 		renvoi = [];
 		renvoi.push(players);
 		renvoi.push(animaux);
