@@ -177,13 +177,6 @@ app.get("/admin", function (req, res) {
     res.end(admin_html);
 });
 
-app.get("/restart", function (req, res) {
-    res.end("Ok!");
-
-    if (in_production) require("child_process").exec(__dirname + "/bin/restart");
-});
-
-
 if (!in_production) {
     var serveStatic = require('serve-static');
 
