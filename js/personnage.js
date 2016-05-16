@@ -140,7 +140,7 @@ Joueur.prototype.update = function(joueur){
 };
 
 //Animal.prototype.listeHexaEligible = function() {
-function listeHexaEligible(position) { //mis sur joueur pour test vu que aucun animal initialisé
+/*function listeHexaEligible(position) { //mis sur joueur pour test vu que aucun animal initialisé
     var liste = [];
     var posAnimal = parseInt(position);
     var numHexaHG, numHexaHD, numHexaG, numHexaD, numHexaBG, numHexaBD;
@@ -185,14 +185,14 @@ function calculDistance(posAnimal, posCible){
     return distance;
 }
 
-function HexgoneEligibleDistance(hexagone){
+/*function HexgoneEligibleDistance(hexagone){
     this.hexagone = hexagone;
     this.distance = 0;
     this.nbPassage = 0;
 
 }
 
-function joueurPlusProche(){ //serveur //a lier a animal.prototype
+/*function joueurPlusProche(){ //serveur //a lier a animal.prototype
     //parcours tableaux joueur non allié
     //pour chaqu joueur calcul distance entre animal et joueur
     //prendre le min
@@ -204,7 +204,7 @@ function joueurPlusProche(){ //serveur //a lier a animal.prototype
     return true;
 }
 
-function chasse(animal){ // a ppeller a chaque unité de temps
+/*function chasse(animal){ // a ppeller a chaque unité de temps
     //liste = pathfinding(lion, lion.joueurPlusProche(), listevide);
     //pour chaque position de liste
         //deplacerAnimal()
@@ -221,7 +221,7 @@ function chasse(animal){ // a ppeller a chaque unité de temps
     
 
 //ATTENTION SI JOUEUR NEXISTE PLUS
-function pathfinding(animal, joueur, listePasPrecedents){
+/*function pathfinding(animal, joueur, listePasPrecedents){
     if (parseInt(animal) == joueur.hexagone){
         return listePasPrecedents;
     }
@@ -266,7 +266,7 @@ function pathfinding(animal, joueur, listePasPrecedents){
             return pathfinding(listeDistanceFinale[j].hexagone, joueur, listePasPrecedents);
         }
     }
-}
+}*/
 
 //FONCTIONS POUR COMMUNICATION SERVEUR
 function creerJoueurPrincipal(nom, avatar){

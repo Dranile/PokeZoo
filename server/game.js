@@ -15,7 +15,7 @@ exports.initPartie = function(players,animaux, callback){
 				"guepard":[],
 				"ours":[],
 				"lion":[]
-			}
+			};
 
 			for(var i = 0; i<map.length;i++){
 				switch(map[i]["type"]){
@@ -56,4 +56,4 @@ exports.initPartie = function(players,animaux, callback){
 		}
 	});
 	
-}
+};

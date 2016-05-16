@@ -59,7 +59,7 @@ article ul.menu{
 }
 article div.map{
     overflow:hidden;
-    background-image: url(../img/map_zoo.png);
+    background-image: url(../img/map_zoo.jpg);
     width:1000px;
     height:650px;
     margin-left: 0px;
@@ -81,7 +81,7 @@ canvas{
 
 div.map{
     overflow:hidden;
-    background-image: url(../img/map_zoo.png);
+    background-image: url(../img/map_zoo.jpg);
     width:60vw;
     height:80vh;
     margin-left: 20vw;
