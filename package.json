@@ -1,0 +1,24 @@
+{
+  "name": "pokezoo",
+  "version": "1.0.0",
+  "description": "PokeZoo est un jeu sur navigateur où plusieurs équipent s'affrontent dans un zoo. Celles ci doivent trouver le trésors avant l'ennemis et éviter de se faire attraper par les terribles prédateurs présents. Dressez des animaux et anéantissez l'équipe ennemis. * Survivez en apprivoisant des animaux tous plus féroces les uns que les autres. * Trouvez le trésors avant l'équipe ennemis.",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "cors": "^2.7.1",
+    "express": "^4.13.4",
+    "fs": "^0.0.2",
+    "querystring": "^0.2.0",
+    "serve-static": "^1.10.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.info-ufr.univ-montp2.fr:e20140041615/PokeZoo.git"
+  },
+  "author": "",
+  "license": "ISC"
+}

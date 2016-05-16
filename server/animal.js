@@ -170,10 +170,10 @@ function listeHexaEligible(position,carte) { //mis sur joueur pour test vu que a
 
 function calculDistance(posAnimal, posCible,carte){
     /*
-     var hexaAnimal = document.querySelector("[ordreHexagone='"+posAnimal+"'");
+     var hexaAnimal = document.querySelector("[ordre='"+posAnimal+"'");
      var posAnimalX = parseInt(hexaAnimal.getAttribute("x"));
      var posAnimalY = parseInt(hexaAnimal.getAttribute("y"));
-     var hexaJoueur = document.querySelector("[ordreHexagone='"+posCible+"'");
+     var hexaJoueur = document.querySelector("[ordre='"+posCible+"'");
      var posCibleX = parseInt(hexaJoueur.getAttribute("x"));
      var posCibleY = parseInt(hexaJoueur.getAttribute("y"));
 
