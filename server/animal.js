@@ -105,14 +105,6 @@ Joueur.prototype.getPosition = function(){
 
 };
 
-/*Joueur.prototype.getPosX = function(){
- return this.positionX;
- };
-
- Joueur.prototype.getPosY = function(){
- return this.positionY;
- };*/
-
 Joueur.prototype.prendreNourriture = function(nourriture){
     if (this.nourriture == ""){
         this.nourriture = nourriture;
@@ -161,7 +153,7 @@ function listeHexaEligible(position,carte) { //mis sur joueur pour test vu que a
     var terrain;
     for(var i in tableauProximite){
         terrain = carte[tableauProximite[i]]["type"];
-        if (terrain == "chemin"){
+        if (terrain == "chemin" || terrain == "spawn"){
             liste.push(tableauProximite[i]);
         }
     }
@@ -169,18 +161,6 @@ function listeHexaEligible(position,carte) { //mis sur joueur pour test vu que a
 }
 
 function calculDistance(posAnimal, posCible,carte){
-    /*
-     var hexaAnimal = document.querySelector("[ordre='"+posAnimal+"'");
-     var posAnimalX = parseInt(hexaAnimal.getAttribute("x"));
-     var posAnimalY = parseInt(hexaAnimal.getAttribute("y"));
-     var hexaJoueur = document.querySelector("[ordre='"+posCible+"'");
-     var posCibleX = parseInt(hexaJoueur.getAttribute("x"));
-     var posCibleY = parseInt(hexaJoueur.getAttribute("y"));
-
-     var distance = (posAnimalX-posCibleX)*(posAnimalX-posCibleX) + (posAnimalY-posCibleY)*(posAnimalY-posCibleY);
-     return distance;
-     */
-    // console.log(carte[parseInt(posAnimal)]);
     var hexaAnimal = carte[parseInt(posAnimal)];
     var posAnimalX = parseInt(hexaAnimal["x"]);
     var posAnimalY = parseInt(hexaAnimal["y"]);
@@ -189,17 +169,7 @@ function calculDistance(posAnimal, posCible,carte){
     var posCibleX = parseInt(hexaJoueur["x"]);
     var posCibleY = parseInt(hexaJoueur["y"]);
 
-
-
-    var distance = (posAnimalX-posCibleX)*(posAnimalX-posCibleX) + (posAnimalY-posCibleY)*(posAnimalY-posCibleY);
-    return distance;
-}
-
-function HexgoneEligibleDistance(hexagone){
-    this.hexagone = hexagone;
-    this.distance = 0;
-    this.nbPassage = 0;
-
+    return (posAnimalX-posCibleX)*(posAnimalX-posCibleX) + (posAnimalY-posCibleY)*(posAnimalY-posCibleY);
 }
 
 function joueurPlusProche(players, animal,carte){ //serveur //a lier a animal.prototype
@@ -225,7 +195,6 @@ function joueurPlusProche(players, animal,carte){ //serveur //a lier a animal.pr
     return joueurMin;
 }
 
-
 function chasse(animal,joueur,players,animaux,nbAnimal,carte){ // a ppeller a chaque unité de temps
     //liste = pathfinding(lion, lion.joueurPlusProche(), listevide);
     //pour chaque position de liste
@@ -236,34 +205,25 @@ function chasse(animal,joueur,players,animaux,nbAnimal,carte){ // a ppeller a ch
     var liste = [];
     liste = pathfinding(animal.hexagone, players[joueur], listevide, carte, animal.hexagone);
 
+    console.log("taille chemin : "+ liste.length + "       chemin : ");
+    liste.forEach(function(hexa){
+        console.log(hexa);
+    });
+
     animaux = DeplacementChemin(liste,animal,animaux,nbAnimal);
 
     return animaux;
-
 }
 
-
 function DeplacementChemin(liste,animal,animaux,nbAnimal){ //attention a la recursion, ca bouclait a l'infini
-    console.log("liste de deplacement : "+liste);
-
     if(liste != undefined ){
-        if ( liste.length>0){ //la verif cest ici sinon la console gueule sans s'arreter ^^
+
+        if (liste.length>0){ //la verif cest ici sinon la console gueule sans s'arreter ^^
             var ordreHexa = liste.shift();
-            if (liste.length>0){
-                ordreHexa = liste.shift();
-            }
-            console.log("ordre hexa "+ordreHexa);
-            console.log("animal.hexagone "+animal.hexagone);
-
-            if (parseInt(ordreHexa) == parseInt(animal.hexagone)){
-                console.log("egaux");
-                if (liste.length>0){
-                    ordreHexa = liste.shift();
-                }
-            }
-            animaux[nbAnimal].hexagone = ordreHexa.hexagone;
-            console.log("Ordre hexa deplacement chemin :" +ordreHexa.hexagone);
-
+             if (liste.length>0){
+             ordreHexa = liste.shift();
+             }
+            animaux[nbAnimal].hexagone = ordreHexa;
         }
     }
     return animaux;
@@ -276,98 +236,47 @@ Object.defineProperty(Array.prototype, "supprimerIntervalle", {
     enumerable:false
 });
 
-
-function supprimerBoucle(chemin, debutChemin){
-    console.log("supprimer boucle liste initiale : "+chemin);
-    var debBoucle;
-    var finBoucle;
-    var tailleChemin = chemin.length;
-
-
-    for (var f=tailleChemin-1; f>=0; f--){
-        if(parseInt(debutChemin) == chemin[f].hexagone){
-            debBoucle = 0;
-            finBoucle = f;
-            break;
-        }
-    }
-    //virer boucle
-    chemin.supprimerIntervalle(0, f); // vire de 0 a f inclus
-
-    var boucleTrouve;
-    do{
-        boucleTrouve = false;
-        tailleChemin = chemin.length;
-        out:
-            for (var d=0; d<tailleChemin; d++ ){
-                for (var f=tailleChemin-1; f>=0; f--){
-                    if((f!==d) && chemin[d].hexagone == chemin[f].hexagone){
-                        debBoucle = d;
-                        finBoucle = f;
-                        boucleTrouve = true;
-                        break out;
-                    }
-                }
-            }
-        if (boucleTrouve){
-            chemin.supprimerIntervalle(d+1, f);
-        }
-    }while(boucleTrouve);
-}
-
-//ATTENTION SI JOUEUR NEXISTE PLUS
-function pathfinding(animal, joueur, listePasPrecedents,carte, debutChemin){
-    //console.log("pathfinding");
-
-    if (parseInt(animal) == joueur.hexagone){
-       // console.log("liste chemin : "+listePasPrecedents.length);
-        supprimerBoucle(listePasPrecedents, debutChemin);
-        return listePasPrecedents;
+function pathfinding(posAnimal, posJoueur, cheminCourant, carte){
+    if (parseInt(posAnimal) == posJoueur.hexagone){
+        return cheminCourant;
     }
     else {
-        var liste = listeHexaEligible(parseInt(animal),carte); //liste d'entier
-        var listeDistance = [];
+        var listeHexaEligibles = listeHexaEligible(parseInt(posAnimal),carte);
 
-        for (var i in liste){
-            listeDistance.push(new HexgoneEligibleDistance(liste[i]));
-        }
-        for (var g in listeDistance){
-            for(var t in listePasPrecedents){
-                if(listeDistance[g].hexagone == listePasPrecedents[t].hexagone) {
-                    listeDistance[g].nbPassage = listePasPrecedents[t].nbPassage;
+        var ensembleChemins = [];
+        listeHexaEligibles.forEach(function(hexaEligible){
+            if(cheminCourant.indexOf(hexaEligible) === -1){ //le lhexa n'est pas dans le chemin
+                var copieCheminCourant = [];
+                cheminCourant.forEach(function(hexagone){
+                    copieCheminCourant.push(hexagone);
+                });
+                copieCheminCourant.push(hexaEligible);
+
+                var sousChemin = pathfinding(hexaEligible, posJoueur, copieCheminCourant, carte);
+                if(sousChemin){
+                    ensembleChemins.push(sousChemin);
                 }
             }
-        }
-
-        var listeDistanceFinale = [];
-        for (var h in listeDistance){
-            //if (listeDistance[h].nbPassage < 3) {
-            if (listeDistance[h].nbPassage < 2) {
-                listeDistanceFinale.push(listeDistance[h]);
-            }
-        }
-        for (var hf in listeDistanceFinale) {
-            listeDistanceFinale[hf].nbPassage++;
-            listeDistanceFinale[hf].distance = calculDistance(listeDistanceFinale[hf].hexagone, joueur.hexagone,carte);
-        }
-
-        listeDistanceFinale.sort(function(a,b){
-            if(a.distance > b.distance){
-                return 1;
-            }
-            if(a.distance < b.distance){
-                return -1;
-            }
-            return 0;
         });
-        for (var j in listeDistanceFinale){
-            listePasPrecedents.push(listeDistanceFinale[j]);
-            return pathfinding(listeDistanceFinale[j].hexagone, joueur, listePasPrecedents, carte, debutChemin);
-        }
+
+        var tailleCheminMin;
+        var resultat=null;
+        ensembleChemins.forEach(function(sousChemin){
+            if (!resultat){
+                resultat = sousChemin;
+                tailleCheminMin=sousChemin.length;
+            }
+            else{
+                if(sousChemin.length<tailleCheminMin){
+                    resultat=sousChemin;
+                    tailleCheminMin=sousChemin.length;
+                }
+            }
+        });
+
+        return resultat;
     }
-
 }
-
 
 module.exports = {
     Animal: function(n,no){

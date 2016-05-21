@@ -2,6 +2,7 @@
 var total_width = 150;
 var total_height = 17;
 var radius = total_height/2;
+var legende;
 
 function draw() {
     var element = "mur"; //élément par défaut
@@ -11,6 +12,21 @@ function draw() {
 
     loadMap(width, height, rayon,element);
     //redessiner a la fin dun tour
+    $.ajax({
+        url: "/server/getType",
+        async: true
+    }).done(function(d) {
+            if(d == "null"){
+                console.log("test");
+                alert(" Le serveur semble déconnecté ou a eu une erreur :\nProblème de chargement des données");
+            }
+            else{
+                dataSelect = d;
+            }
+        })
+        .fail(function(){
+            alert("Le serveur semble déconnecté ou a eu une erreur :\nImpossible de charger les données");
+        });
 }
 
 function dessiner(joueurPrincipal){
@@ -81,39 +97,29 @@ function dessiner(joueurPrincipal){
 
     var compteur = 0;
     var hauteurTexte = 0.85*hauteur;
-    $.ajax({
-        url: "/server/getType",
-        async: true
-    }).done(function(d) {
-        if(d == "null"){
-            console.log("test");
-            alert(" Le serveur semble déconnecté ou a eu une erreur :\nProblème de chargement des données");
-        }
-        else{
-            dataSelect = d;
-            dataSelect.forEach(function(d, indexLegende) {
-                var debutTexte = (0.21*largeur)+(indexLegende*(0.08*largeur));
-                if (/^Cage.*/.test(d.type)) {
-                    hauteurTexte = 0.90 * hauteur;
-                    debutTexte = (0.21*largeur)+((indexLegende-compteur-1)*(0.08*largeur));
-                } else if (d.type == "Viande") {
-                    hauteurTexte = 0.95 * hauteur;
-                    debutTexte = (0.21*largeur);
-                }
-                else {
-                    compteur = indexLegende;
-                }
-                context.fillStyle = d.couleur;
-                context.fillRect(debutTexte+5, hauteurTexte, 15, 15);
-                context.fillStyle = "rgb(255,255,255)";
-                context.font = "15px Arial";
-                context.fillText(d.type, debutTexte, hauteurTexte-4);
-            });
-        }
-    })
-    .fail(function(){
-        alert("Le serveur semble déconnecté ou a eu une erreur :\nImpossible de charger les données");
-    });
+
+    if(dataSelect){
+        dataSelect.forEach(function(d, indexLegende) {
+            var debutTexte = (0.21*largeur)+(indexLegende*(0.08*largeur));
+            if (/^Cage.*/.test(d.type)) {
+                hauteurTexte = 0.90 * hauteur;
+                debutTexte = (0.21*largeur)+((indexLegende-compteur-1)*(0.08*largeur));
+            } else if (d.type == "Viande") {
+                hauteurTexte = 0.95 * hauteur;
+                debutTexte = (0.21*largeur);
+            }
+            else {
+                compteur = indexLegende;
+            }
+            context.fillStyle = d.couleur;
+            context.fillRect(debutTexte+5, hauteurTexte, 15, 15);
+            context.fillStyle = "rgb(255,255,255)";
+            context.font = "15px Arial";
+            context.fillText(d.type, debutTexte, hauteurTexte-4);
+        });
+    }
+
+
 }
 
 function roundRect(ctx, x, y, width, height, radius) {
