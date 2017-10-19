@@ -46,7 +46,7 @@ function initialiseAnimaux(){
     var lion = personnage.Animal('lion', "viande");
     var loup = personnage.Animal('loup', "viande");
     var guepard = personnage.Animal('guepard', "viande");
-    var ours = personnage.Animal('ours', "poisson");
+    var ours = personnage.Animal('ours', "viande");
     animaux = [lion,loup,guepard, ours];
     console.log(animaux);
 }
@@ -72,6 +72,13 @@ function initialiserCarte(){
                 return console.log(err);
             }
             carte = JSON.parse(data);
+            /*carte.getElement = function(index){
+                var resultat = carte[index];
+                if (!resultat){
+                    console.log("index "+ index+" invalide");
+                }
+                return resultat;
+            };*/
             for(var i in carte){
                 carteClient.push({"type":carte[i]["type"],
                     "color":carte[i]["color"]});
@@ -86,9 +93,15 @@ function updateTimeoutPlayer(index){
     //Problème au moment de l'activation du timeout ...
     //la fonction prend l'environnement courant ou lieu du moment où setTimeout est appelé
     tabTimeout[index] = setTimeout(function() {
+        console.log("Timeout " + tabTimeout[index] + "  " + index);
         console.log(players[index]["nom"] + " timed out");
         players.splice(index,1);
+        //clearTimeout(index,1);
         tabTimeout.splice(index,1);
+
+        if(players.length == 0){
+            reintialiser();
+        }
     }, timeoutTime);
 }
 
@@ -110,10 +123,22 @@ function updatePlayers(joueur){
     for(var i in players){
         if(players[i]["nom"] == joueur["nom"]){
             players[i].update(joueur);
-            updateTimeoutPlayer(i);
+            //updateTimeoutPlayer(i);
             etatJoueurs[i] = 1;
-            console.log("Mise à jour joueur : " + joueur["nom"]);
+            //console.log("Mise à jour joueur : " + joueur["nom"]);
         }
+    }
+}
+
+function reintialiser(){
+    plein = false;
+    for(var i in tabTimeout){
+        clearTimeout(tabTimeout[i]);
+        tabTimeout.splice(i,1);
+        players = [];
+        animaux = [];
+        var etatJoueurs = [];
+        retour = null;
     }
 }
 
@@ -152,27 +177,43 @@ app.post("/game/nourrir", function(req,res){
     res.end("OK");
 });
 
-var index_html = fs.readFileSync("html/index.html");
+app.post("/game/mort", function(req,res){
+    // res.setHeader('Access-Control-Allow-Origin', '*');
+
+    //------------------------ Methode 2 --------------------------------------------------------------------
+    console.log(req.body["nom"] + " est mort");
+    for(var i in players){
+        if(players[i]["nom"] == req.body["nom"]){
+            players.splice(i,1);
+            clearTimeout(tabTimeout[i]);
+            tabTimeout.splice(i,1);
+        }
+    }
+    res.end("OK");
+});
+
+
+const index_html = fs.readFileSync("html/index.html");
 app.get("/", function (req, res) {
     res.end(index_html);
 });
 
-var jeu_html = fs.readFileSync("html/jeu.html");
+const jeu_html = fs.readFileSync("html/jeu.html");
 app.get("/jeu", function (req, res) {
     res.end(jeu_html);
 });
 
-var faq_html = fs.readFileSync("html/FAQ.html");
+const faq_html = fs.readFileSync("html/FAQ.html");
 app.get("/FAQ", function (req, res) {
     res.end(faq_html);
 });
 
-var contact_html = fs.readFileSync("html/contact.html");
+const contact_html = fs.readFileSync("html/contact.html");
 app.get("/FAQ", function (req, res) {
     res.end(contact_html);
 });
 
-var admin_html = fs.readFileSync("html/editMap.html");
+const admin_html = fs.readFileSync("html/editMap.html");
 app.get("/admin", function (req, res) {
     res.end(admin_html);
 });
@@ -191,7 +232,6 @@ app.post("/game/joinGame", function(req,res){
     }
     else{
         var json = req.body;
-        console.log(json);
         var joueur = personnage.Joueur(json["nom"],json["image"]);
         joueur.update(json);
         players.push(joueur);
@@ -204,7 +244,6 @@ app.post("/game/joinGame", function(req,res){
                 players = j;
                 animaux = a;
                 retour = players;
-                console.log(players);
                 console.log("lancement de la partie !!");
             });
         }
@@ -226,17 +265,31 @@ app.get("/game/getEtat", function(req,res){
 
 app.post("/game/updateGame", function(req, res){
     // res.setHeader('Access-Control-Allow-Origin', '*');
-    var json = req.body;
-    updatePlayers(json);
-    if(jeuAJour()){
-        console.log("Tous le monde a envoyé, mis à jour de la partie");
-        updateGame();
-        animaux = personnage.chasseAnimaux(players,animaux,carte);
-        renvoi = [];
-        renvoi.push(players);
-        renvoi.push(animaux);
+    if(plein == true){
+        var json = req.body;
+        updatePlayers(json);
+        if(players.length == 1){
+            //faire une vraie réinitialisation de partie
+            res.json("win");
+            console.log("Réinitialisation de la partie");
+            reintialiser();
+            return;
+        }
+
+        if(jeuAJour()){
+            console.log("Tous le monde a envoyé, mis à jour de la partie");
+            updateGame();
+            animaux = personnage.chasseAnimaux(players,animaux,carte);
+            renvoi = [];
+            renvoi.push(players);
+            renvoi.push(animaux);
+        }
+        res.json(renvoi);
+        return;
     }
-    res.json(renvoi);
+    else{
+        res.json("fin");
+    }
 });
 
 

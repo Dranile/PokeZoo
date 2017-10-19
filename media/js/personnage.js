@@ -24,7 +24,7 @@ function Animal(nom, nourriture){
     Personnage.call(this, nom);
     this.alimentation = nourriture;
     this.loyaute = 0;
-    this.loyauteMax = 5;
+    this.loyauteMax = 1;
     this.joueurAllie = null;
     this.niveau = [];
 
@@ -280,7 +280,7 @@ function ajouterAutreJoueur(nom, avatar){
 var lion = new Animal('lion', "viande");
 var loup = new Animal('loup', "viande");
 var guepard = new Animal('guepard', "viande");
-var ours = new Animal('ours', "poisson");
+var ours = new Animal('ours', "viande");
 var animaux = [lion, loup, guepard, ours];
 
 

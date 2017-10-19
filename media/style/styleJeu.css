@@ -43,6 +43,9 @@ div.login{
 .radio { position: absolute; bottom: 0px; right: 0px;}
 
 
+div.gameOver{
+    text-align:center;
+}
 /*
 PARTIE ADMIN
 */

@@ -126,7 +126,6 @@ Joueur.prototype.update = function(joueur){
 
 };
 
-
 function listeHexaEligible(position,carte) { //mis sur joueur pour test vu que aucun animal initialisé
     var liste = [];
     var posAnimal = parseInt(position);
@@ -153,6 +152,7 @@ function listeHexaEligible(position,carte) { //mis sur joueur pour test vu que a
     var terrain;
     for(var i in tableauProximite){
         terrain = carte[tableauProximite[i]]["type"];
+        //terrain =  carte.getElement(tableauProximite[i])["type"];
         if (terrain == "chemin" || terrain == "spawn"){
             liste.push(tableauProximite[i]);
         }
@@ -161,15 +161,21 @@ function listeHexaEligible(position,carte) { //mis sur joueur pour test vu que a
 }
 
 function calculDistance(posAnimal, posCible,carte){
+    var resultat=Infinity;
     var hexaAnimal = carte[parseInt(posAnimal)];
-    var posAnimalX = parseInt(hexaAnimal["x"]);
-    var posAnimalY = parseInt(hexaAnimal["y"]);
+    if (hexaAnimal){
+        var posAnimalX = parseInt(hexaAnimal["x"]);
+        var posAnimalY = parseInt(hexaAnimal["y"]);
 
-    var hexaJoueur = carte[parseInt(posCible)];
-    var posCibleX = parseInt(hexaJoueur["x"]);
-    var posCibleY = parseInt(hexaJoueur["y"]);
+        var hexaJoueur = carte[parseInt(posCible)];
+        if (hexaJoueur){
+            var posCibleX = parseInt(hexaJoueur["x"]);
+            var posCibleY = parseInt(hexaJoueur["y"]);
 
-    return (posAnimalX-posCibleX)*(posAnimalX-posCibleX) + (posAnimalY-posCibleY)*(posAnimalY-posCibleY);
+            resultat = (posAnimalX-posCibleX)*(posAnimalX-posCibleX) + (posAnimalY-posCibleY)*(posAnimalY-posCibleY);
+        }
+    }
+    return resultat;
 }
 
 function joueurPlusProche(players, animal,carte){ //serveur //a lier a animal.prototype
@@ -200,31 +206,36 @@ function chasse(animal,joueur,players,animaux,nbAnimal,carte){ // a ppeller a ch
     //pour chaque position de liste
     //deplacerAnimal()
     //attendre unmoment (1sec)
+    console.log(animal.nom+" chasse "+ players[joueur].nom);
 
-    var listevide = [];
-    var liste = [];
-    liste = pathfinding(animal.hexagone, players[joueur], listevide, carte, animal.hexagone);
+    var liste = pathfinding(animal.hexagone, players[joueur], carte, animal.hexagone);
 
-    console.log("taille chemin : "+ liste.length + "       chemin : ");
-    liste.forEach(function(hexa){
+   // console.log("taille chemin : "+ liste.length);
+    //console.log("position de " +animal.nom+" : " + animal.hexagone);
+    /*liste.forEach(function(hexa){
         console.log(hexa);
-    });
-
-    animaux = DeplacementChemin(liste,animal,animaux,nbAnimal);
-
+    });*/
+    if(liste){
+        animaux = DeplacementChemin(liste, animaux, nbAnimal);    
+    }
     return animaux;
 }
 
-function DeplacementChemin(liste,animal,animaux,nbAnimal){ //attention a la recursion, ca bouclait a l'infini
-    if(liste != undefined ){
+function DeplacementChemin(liste, animaux, indiceAnimal){ //attention a la recursion, ca bouclait a l'infini
+    if(liste != undefined && liste.length>0){
+        const vitesse = 4;
+        var ite=0;
+        var ordreHexa = parseInt(animaux[indiceAnimal].hexagone);
 
-        if (liste.length>0){ //la verif cest ici sinon la console gueule sans s'arreter ^^
-            var ordreHexa = liste.shift();
-             if (liste.length>0){
-             ordreHexa = liste.shift();
-             }
-            animaux[nbAnimal].hexagone = ordreHexa;
-        }
+        do{
+            ite=0;
+            while (ite<vitesse && liste.length>0){
+                ordreHexa = liste.shift();
+                ite++;
+            }
+        }while (ordreHexa == parseInt(animaux[indiceAnimal].hexagone) && liste.length>0);
+
+        animaux[indiceAnimal].hexagone = ordreHexa;
     }
     return animaux;
 }
@@ -236,46 +247,118 @@ Object.defineProperty(Array.prototype, "supprimerIntervalle", {
     enumerable:false
 });
 
-function pathfinding(posAnimal, posJoueur, cheminCourant, carte){
-    if (parseInt(posAnimal) == posJoueur.hexagone){
-        return cheminCourant;
-    }
-    else {
-        var listeHexaEligibles = listeHexaEligible(parseInt(posAnimal),carte);
+function pathfinding(posAnimal, posJoueur, carte) {
+    // Variable "globale" à la fonction (0 : Indique qu'aucun chemin n'a encore été trouvé)
+    var tailleCheminMinimalCourrant = 0;
 
-        var ensembleChemins = [];
-        listeHexaEligibles.forEach(function(hexaEligible){
-            if(cheminCourant.indexOf(hexaEligible) === -1){ //le lhexa n'est pas dans le chemin
-                var copieCheminCourant = [];
-                cheminCourant.forEach(function(hexagone){
-                    copieCheminCourant.push(hexagone);
+    // Fonction interne implémentant pathfinding
+    function intern(posAnimal, posJoueur, cheminCourant, carte) {
+        //console.log("appel a pathfinding");
+        // Cherche un chemin
+        if (parseInt(posAnimal) == posJoueur.hexagone) {
+            if (!tailleCheminMinimalCourrant || cheminCourant.length < tailleCheminMinimalCourrant) {
+                // On n'avait pas de chemin ou on a trouvé un nouveau plus court!
+                tailleCheminMinimalCourrant = cheminCourant.length;
+            } else {
+                //  Empeche l'appel récursif avec un chemin plus long
+                cheminCourant = null;
+            }
+            return cheminCourant;
+        }
+        else {
+            // On collecte les cases adjacentes qui sont éligibles au déplacement
+            var listeHexaEligibles = listeHexaEligible(parseInt(posAnimal),carte);
+            var listeHexaAvecDistances = [];
+
+            // On crée une nouvelle liste contenant en plus les distances
+            listeHexaEligibles.forEach(function(hexa) {
+                listeHexaAvecDistances.push({
+                    hexa : hexa,
+                    distance : calculDistance(hexa, posJoueur.hexagone, carte)
                 });
-                copieCheminCourant.push(hexaEligible);
+            });
 
-                var sousChemin = pathfinding(hexaEligible, posJoueur, copieCheminCourant, carte);
-                if(sousChemin){
-                    ensembleChemins.push(sousChemin);
+            // On trie selon la distance
+            listeHexaAvecDistances.sort(function(a, b) { return a.distance - b.distance; });
+
+            var tailleMaxAtteinte =false;
+            var ensembleChemins = [];
+            listeHexaAvecDistances.forEach(function(hexaEligibleAvecDistance) {
+                // On itère dans l'ordre croissant (chemin plus court à vol d'oiseau en premier)
+                var hexaEligible = hexaEligibleAvecDistance.hexa;  // On récupère l'hexagone
+
+                // Empêche de passer deux fois par la même case
+                if(cheminCourant.indexOf(hexaEligible) === -1) {
+                    // On fait une copie du chemin courrant et on y concatène le nouvel hexagone
+                    var copieCheminCourant = [];
+                    cheminCourant.forEach(function(hexagone){
+                        copieCheminCourant.push(hexagone);
+                    });
+                    copieCheminCourant.push(hexaEligible);
+
+                    // Verifie si on a déjà un chemin, sinon vérifie qu'on ne génère pas quelque chose de plus grand
+                    if (!tailleCheminMinimalCourrant
+                        || (tailleCheminMinimalCourrant && (copieCheminCourant.length < tailleCheminMinimalCourrant))) {
+                        if (copieCheminCourant.length<60){
+                            var sousChemin = intern(hexaEligible, posJoueur, copieCheminCourant, carte);
+
+                        }
+                        else {
+                            sousChemin=copieCheminCourant;
+                            tailleMaxAtteinte = true;
+                        }
+
+                        // On test si le chemin mène quelque part, sinon la fonction renvoie null
+                        if(sousChemin) {
+                            ensembleChemins.push(sousChemin);
+                        }
+                    }
                 }
-            }
-        });
+            });
 
-        var tailleCheminMin;
-        var resultat=null;
-        ensembleChemins.forEach(function(sousChemin){
-            if (!resultat){
-                resultat = sousChemin;
-                tailleCheminMin=sousChemin.length;
+            // On détermine le plus petit chemin en nombre de case
+            // ou le plus proche en distance
+            var resultat=null;
+            if (tailleMaxAtteinte == true){
+                var distanceFinCibleMin;
+                ensembleChemins.forEach(function(sousCheminCoupe){
+                    var dernierElement = sousCheminCoupe[(sousCheminCoupe.length)-1];
+                    var distanceDernierCible = calculDistance(dernierElement, posJoueur.hexagone, carte);
+                    if (!resultat){
+                        resultat = sousCheminCoupe;
+                        distanceFinCibleMin = distanceDernierCible;
+                    }
+                    else{
+                        if(distanceDernierCible < distanceFinCibleMin){
+                            resultat=sousCheminCoupe;
+                            distanceFinCibleMin = distanceDernierCible;
+                        }
+                    }
+                });
             }
-            else{
-                if(sousChemin.length<tailleCheminMin){
-                    resultat=sousChemin;
-                    tailleCheminMin=sousChemin.length;
-                }
+            else {
+                var tailleCheminMin;
+                ensembleChemins.forEach(function(sousChemin){
+                    if (!resultat){
+                        resultat = sousChemin;
+                        tailleCheminMin=sousChemin.length;
+                    }
+                    else{
+                        if(sousChemin.length<tailleCheminMin){
+                            resultat=sousChemin;
+                            tailleCheminMin=sousChemin.length;
+                        }
+                    }
+                });
             }
-        });
 
-        return resultat;
+
+            return resultat;
+        }
     }
+
+    // Appel à la fonction interne avec un chemin nitialisé à "vide"
+    return intern(posAnimal, posJoueur, [], carte);
 }
 
 module.exports = {

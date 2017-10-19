@@ -100,10 +100,10 @@ function dessiner(joueurPrincipal){
 
     if(dataSelect){
         dataSelect.forEach(function(d, indexLegende) {
-            var debutTexte = (0.21*largeur)+(indexLegende*(0.08*largeur));
+            var debutTexte = (0.21*largeur)+(indexLegende*(0.15*largeur));
             if (/^Cage.*/.test(d.type)) {
                 hauteurTexte = 0.90 * hauteur;
-                debutTexte = (0.21*largeur)+((indexLegende-compteur-1)*(0.08*largeur));
+                debutTexte = (0.21*largeur)+((indexLegende-compteur-1)*(0.15*largeur));
             } else if (d.type == "Viande") {
                 hauteurTexte = 0.95 * hauteur;
                 debutTexte = (0.21*largeur);
