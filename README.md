@@ -17,20 +17,14 @@ PokeZoo utilise un certains nombre de technologies pour fonctionner:
 Vous avez besoin de NodeJS installé
 
 ```sh
-$ git clone [git-repo-url]
-$ cd PokeZoo
+git clone https://github.com/Dranile/PokeZoo.git
+cd PokeZoo
+npm install
 ```
 
 ### Utilisation
 1. Lancer le serveur avec la commande `node app.js`
-2. Ouvrir la page index.html dans votre navigateur
 
-### ToDo
-* Déplacement et gestion des joueurs
-* Ordonnanceur (Données échangées entre le serveur et les clients)
-* IA des animaux
-
-   [git-repo-url]: <https://gitlab.info-ufr.univ-montp2.fr/e20140041615/PokeZoo.git>
    [node.js]: <http://nodejs.org>
    [jQuery]: <http://jquery.com>
    [express]: <http://expressjs.com>
